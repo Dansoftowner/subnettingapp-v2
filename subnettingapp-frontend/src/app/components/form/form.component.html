@@ -1,0 +1,89 @@
+<div class="container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <table>
+      <tr>
+        <td>
+          <label for="ipField">{{ "form.ipField.label" | translate }}</label>
+          <label class="abbr-label">{{
+            "form.ipField.label.abbr" | translate
+          }}</label>
+        </td>
+        <td class="input-td">
+          <div>
+            <input
+              id="ipField"
+              type="text"
+              formControlName="ip"
+              placeholder="{{ 'form.ipField.prompt' | translate }}"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <label for="maskField">{{
+            "form.maskField.label" | translate
+          }}</label>
+          <label class="abbr-label">{{
+            "form.maskField.label.abbr" | translate
+          }}</label>
+        </td>
+        <td class="input-td">
+          <div>
+            <input
+              id="maskField"
+              type="text"
+              formControlName="mask"
+              placeholder="{{ 'form.maskField.prompt' | translate }}"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="radio"
+            id="simpleInfoBox"
+            formControlName="task"
+            value="si"
+          />
+          <label for="simpleInfoBox">{{
+            "form.task.basic_subnet_info" | translate
+          }}</label>
+          <label class="abbr-label">{{
+            "form.task.basic_subnet_info.abbr" | translate
+          }}</label>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <input
+            type="radio"
+            id="partitioningBox"
+            formControlName="task"
+            value="sp"
+          />
+          <label for="partitioningBox">{{
+            "form.task.partition" | translate
+          }}</label>
+        </td>
+        <td class="input-td">
+          <div>
+            <input
+              id="hostsCount"
+              type="text"
+              formControlName="hostCounts"
+              placeholder="{{ 'form.hostsCount.prompt' | translate }}"
+            />
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td class="submit-td" colspan="2">
+          <hr />
+          <button type="submit">{{ "form.submit" | translate }}</button>
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
