@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { SubnetValidators as IPv4Validators } from './ipv4-validators';
+import { IPv4Validators as IPv4Validators } from './ipv4-validators';
 import { Router } from '@angular/router';
-import { Entry } from '../results/results.component';
+import { Entry, ResultInfo } from '../results/results.component';
 
 @Component({
   selector: 'app-form',
@@ -76,7 +76,8 @@ export class FormComponent implements OnInit {
         lastHostAddress: '192.168.1.254',
         broadcastAddress: '192.168.1.255',
         subnetMask: '255.255.255.0',
-        hosts: 200,
+        subnetMaskBitCount: 24,
+        hosts: Math.pow(2, 8) - 2,
         hostsUsed: 120,
       },
       {
@@ -85,7 +86,8 @@ export class FormComponent implements OnInit {
         lastHostAddress: '10.0.0.14',
         broadcastAddress: '10.0.0.15',
         subnetMask: '255.255.255.240',
-        hosts: 30,
+        subnetMaskBitCount: 28,
+        hosts: Math.pow(2, 4) - 2,
         hostsUsed: 11,
       },
       {
@@ -94,12 +96,24 @@ export class FormComponent implements OnInit {
         lastHostAddress: '172.16.0.126',
         broadcastAddress: '172.16.0.127',
         subnetMask: '255.255.255.128',
-        hosts: 40,
+        subnetMaskBitCount: 25,
+        hosts: Math.pow(2, 7) - 2,
         hostsUsed: 38,
       },
     ];
 
-    this.router.navigate(['/results'], { state: { entries } });
+    const resultInfo: ResultInfo = {
+      networkAddress: this.form.get('ip')!.value,
+      networkMask: this.form.get('mask')!.value,
+      hostsCounts: this.form
+        .get('hostCounts')!
+        .value.split(',')
+        .map((s: any) => +s),
+      type: this.form.get('task')!.value,
+      entries,
+    };
+
+    this.router.navigate(['/results'], { state: { resultInfo } });
 
     // proceed with valid data
     console.log(this.form.value);

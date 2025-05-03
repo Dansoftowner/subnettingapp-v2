@@ -52,8 +52,11 @@
         <td class="value">{{ entry.subnetMask }}</td>
       </tr>
     </table>
-
-    <div class="hosts-progress-indication">
+    <div class="regular-hosts-indication">
+      2<sup>32-{{ entry.subnetMaskBitCount }}</sup> -2 =
+      {{ entry.hosts }} állomás fér el.
+    </div>
+    <div class="hosts-progress-indication" *ngIf="resultInfo.type == 'sp'">
       <div class="hosts-progress">
         <div class="hosts-progress-bg"></div>
         <div

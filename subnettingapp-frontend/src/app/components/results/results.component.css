@@ -88,3 +88,9 @@
 .hosts-remaining {
   display: inline-block;
 }
+
+.regular-hosts-indication {
+  padding-left: 10px;
+  padding-right: 10px;
+  font-size: 0.8rem;
+}

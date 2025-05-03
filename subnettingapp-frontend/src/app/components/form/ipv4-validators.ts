@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors } from '@angular/forms';
 
-export class SubnetValidators {
+export class IPv4Validators {
   private static ipRegex = /^\d+\.\d+\.\d+\.\d+$/;
   private static cdirRegex = /^\/\d+$/;
   private static listRegex = /^(\d+)(,\s*\d+)*$/;
@@ -9,7 +9,7 @@ export class SubnetValidators {
   static ipv4Address(control: AbstractControl): ValidationErrors | null {
     const v: string = control.value;
 
-    if (!SubnetValidators.ipRegex.test(v)) return { ip: true };
+    if (!IPv4Validators.ipRegex.test(v)) return { ip: true };
     const parts = v.split('.').map((n) => +n);
 
     return parts.every((n) => n >= 0 && n <= 255) ? null : { ip: true };
@@ -19,7 +19,7 @@ export class SubnetValidators {
     const v: string = control.value;
 
     // validate mask formatted in 'x.x.x.x'
-    if (SubnetValidators.ipRegex.test(v)) {
+    if (IPv4Validators.ipRegex.test(v)) {
       const parts = v.split('.').map((n) => +n);
       for (let i = 1; i < parts.length; i++) {
         // the mask should be continous
@@ -29,7 +29,7 @@ export class SubnetValidators {
     }
 
     // validate mask formatted in '/x'
-    if (SubnetValidators.cdirRegex.test(v)) {
+    if (IPv4Validators.cdirRegex.test(v)) {
       const num = +v.slice(1);
       return num > 0 && num < 33 ? null : { mask: true };
     }
@@ -39,12 +39,12 @@ export class SubnetValidators {
 
   static hostsList(control: AbstractControl): ValidationErrors | null {
     const v: string = control.value;
-    return SubnetValidators.listRegex.test(v) ? null : { hostsList: true };
+    return IPv4Validators.listRegex.test(v) ? null : { hostsList: true };
   }
 
-  static calculateAutoMask(ipAddress: string) {
-    let ipClass = SubnetValidators.getClassForIp(ipAddress);
-    let maskCalc = SubnetValidators.classMask[ipClass as 'A' | 'B' | 'C'];
+  static calculateAutoMask(ipAddress: string): number {
+    let ipClass = IPv4Validators.getClassForIp(ipAddress);
+    let maskCalc = IPv4Validators.classMask[ipClass as 'A' | 'B' | 'C'];
     return maskCalc || 0;
   }
 
@@ -87,5 +87,30 @@ export class SubnetValidators {
 
       return formatted.substring(0, formatted.length - 1);
     }
+  }
+
+  static maskToBitCount(mask: string): number | undefined {
+    if (IPv4Validators.cdirRegex.test(mask)) {
+      return +mask.slice(1);
+    } else {
+      let bitCount = 0;
+      const parts = mask.split('.').map((n) => +n);
+      for (let i = 1; i < parts.length; i++) {
+        // the mask should be continous
+        if (parts[i] > parts[i - 1]) return undefined;
+        bitCount += IPv4Validators.bitCount(parts[i - 1]);
+      }
+      bitCount += IPv4Validators.bitCount(parts[parts.length - 1]);
+      return bitCount;
+    }
+  }
+
+  static bitCount(num: number): number {
+    let count = 0;
+    while (num > 0) {
+      count += num & 1;
+      num >>= 1;
+    }
+    return count;
   }
 }
