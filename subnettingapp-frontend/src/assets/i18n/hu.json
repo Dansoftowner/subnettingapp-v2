@@ -22,6 +22,8 @@
     "results.entry.broadcast.abbr": "SZ:",
     "results.entry.mask": "Maszk:",
     "results.entry.mask.abbr": "M:",
+    "results.entry.progress.used": "állomás használatban",
+    "results.entry.progress.remains": "állomás még befér",
     "settings": "Beállítások",
     "settings.theme": "Téma",
     "settings.theme.dark": "Sötét",

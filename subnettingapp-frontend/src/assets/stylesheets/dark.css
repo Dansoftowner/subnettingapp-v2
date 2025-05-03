@@ -3,160 +3,167 @@
 /* General */
 
 body {
-    background-color: #323437;
-    color: white;
-    accent-color: #e2b714;
+  background-color: #323437;
+  color: white;
+  accent-color: #e2b714;
 }
 
 /* Header */
 
 .header {
-    background-color: #323437;
+  background-color: #323437;
 }
 
 .header .logo {
-    background-color: #e2b714;
-    color: #323437;
+  background-color: #e2b714;
+  color: #323437;
 }
 
 .header a {
-    color: lightgray;
+  color: lightgray;
 }
 
 .header a:hover {
-    color: #e2b714;
+  color: #e2b714;
 }
 
 /* Form */
 
 form {
-    box-shadow: 2px 2px 20px #1c1c1c;
+  box-shadow: 2px 2px 20px #1c1c1c;
 }
 
 form:hover {
-    box-shadow: 2px 2px 20px 5px #1c1c1c;
+  box-shadow: 2px 2px 20px 5px #1c1c1c;
 }
 
 form label {
-    color: #e2b714;
+  color: #e2b714;
 }
 
 form input[type="text"] {
-    background-color: #2C2E31;
-    color: white;
+  background-color: #2c2e31;
+  color: white;
 }
 
 form input[type="text"]:focus {
-   outline: 3px solid gray;
+  outline: 3px solid gray;
 }
 
 form button[type="submit"] {
-    background-color: #2c2e31;
-    color: white;
-
+  background-color: #2c2e31;
+  color: white;
 }
 
 form button[type="submit"]:hover {
-    background-color: #e2b714;
-    color: #2c2e31;
+  background-color: #e2b714;
+  color: #2c2e31;
 }
 
 form input[type="radio"] {
-    background: #2c2e31;
-    outline: 2px solid #e2b714;
-
+  background: #2c2e31;
+  outline: 2px solid #e2b714;
 }
 
 form input[type="radio"]:checked {
-    background: #e2b714;
-    border: 2px solid #2c2e31;
+  background: #e2b714;
+  border: 2px solid #2c2e31;
 }
 
 form hr {
-    height: 1px;
-    background-color: rgba(204, 204, 204, 0.356);
-    border: none;
+  height: 1px;
+  background-color: rgba(204, 204, 204, 0.356);
+  border: none;
 }
 
-form input[type=text].error {
-    color: red;
-    outline: red solid 2px;
+form input[type="text"].error {
+  color: red;
+  outline: red solid 2px;
 }
 
 /* Results page */
 
 .container .count-label strong {
-    color: #e2b714;
+  color: #e2b714;
 }
 
 .entry {
-    background-color: #323437;
-    box-shadow: 2px 2px 20px #1c1c1c;
+  background-color: #323437;
+  box-shadow: 2px 2px 20px #1c1c1c;
 }
 
 .entry:hover {
-    box-shadow: 2px 2px 20px 5px #1c1c1c;
+  box-shadow: 2px 2px 20px 5px #1c1c1c;
 }
 
 .entry .label {
-    color: #e2b714;
-    font-weight: bold;
+  color: #e2b714;
+  font-weight: bold;
 }
 
 .index-label {
-    color: #323437;
-    background-color: #e2b714;
-    font-weight: bold;
+  color: #323437;
+  background-color: #e2b714;
+  font-weight: bold;
+}
+
+.hosts-progress-bg {
+  background-color: gray;
+}
+
+.hosts-progress-fill {
+  background-color: #e2b714;
 }
 
 /* Config page */
 
 select {
-    background: #2c2e31;
-    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
-    background-repeat: no-repeat;
-    background-position-x: 100%;
-    background-position-y: 5px;
-    border: none;
+  background: #2c2e31;
+  background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/><path d='M0 0h24v24H0z' fill='none'/></svg>");
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  background-position-y: 5px;
+  border: none;
 }
 
-select:hover, select:focus {
-    outline: 3px solid gray;
+select:hover,
+select:focus {
+  outline: 3px solid gray;
 }
 
 .group-page .group-span {
-    border-bottom: 1px solid gray;
+  border-bottom: 1px solid gray;
 }
-
 
 /* Footer */
 
 .footer {
-    background: #292929;
+  background: #292929;
 }
 
-.footer a, .footer label {
-    color: gray;
+.footer a,
+.footer label {
+  color: gray;
 }
 
 .footer a:hover {
-    color: white;
+  color: white;
 }
 
 .footer hr {
-    border: 0px 0px 0px 1px solid #434445;
+  border: 0px 0px 0px 1px solid #434445;
 }
 
 /* Error page */
 .container.error h1 {
-    color: red;
+  color: red;
 }
 
 .container.error h2 {
-    color: lightgray;
+  color: lightgray;
 }
 
 .container.error table .format-cell span {
-    border-radius: 5px;
-    background-color: #434445;
+  border-radius: 5px;
+  background-color: #434445;
 }

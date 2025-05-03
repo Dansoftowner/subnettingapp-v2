@@ -47,3 +47,44 @@
     display: inline;
   }
 }
+
+.hosts-progress-indication {
+  padding: 0 10px;
+}
+
+.hosts-progress {
+  position: relative;
+  width: 100%;
+  height: 8px;
+  margin: 8px auto;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.hosts-progress-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.hosts-progress-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  transition: width 0.3s ease;
+}
+
+.hosts-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.875rem;
+  margin-top: 4px;
+}
+
+.hosts-used,
+.hosts-remaining {
+  display: inline-block;
+}
