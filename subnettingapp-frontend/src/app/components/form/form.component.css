@@ -59,6 +59,7 @@ form input[type="radio"] {
   transition: opacity 0.2s;
   opacity: 0.8;
   transition: background 0.2s;
+  margin-right: 10px;
 }
 
 form input[type="radio"]:hover {
@@ -81,7 +82,7 @@ form input[type="text"]:disabled {
   }
 
   form table tr td:first-child {
-    width: 10%;
+    max-width: 2em;
   }
 
   form .abbr-label {
