@@ -65,6 +65,7 @@
               }
             ],
             "styles": [
+              "src/styles.css",
               "src/assets/stylesheets/base.css",
               "src/assets/stylesheets/fonts.css",
               "src/assets/stylesheets/light.css",
