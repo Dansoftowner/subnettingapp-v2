@@ -7,6 +7,8 @@ export interface Entry {
   lastHostAddress: string;
   broadcastAddress: string;
   subnetMask: string;
+  hosts: number;
+  hostsUsed: number;
 }
 
 @Component({

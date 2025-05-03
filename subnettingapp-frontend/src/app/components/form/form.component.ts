@@ -76,6 +76,8 @@ export class FormComponent implements OnInit {
         lastHostAddress: '192.168.1.254',
         broadcastAddress: '192.168.1.255',
         subnetMask: '255.255.255.0',
+        hosts: 20,
+        hostsUsed: 12,
       },
       {
         subnetAddress: '10.0.0.0',
@@ -83,6 +85,8 @@ export class FormComponent implements OnInit {
         lastHostAddress: '10.0.0.14',
         broadcastAddress: '10.0.0.15',
         subnetMask: '255.255.255.240',
+        hosts: 20,
+        hostsUsed: 12,
       },
       {
         subnetAddress: '172.16.0.0',
@@ -90,6 +94,8 @@ export class FormComponent implements OnInit {
         lastHostAddress: '172.16.0.126',
         broadcastAddress: '172.16.0.127',
         subnetMask: '255.255.255.128',
+        hosts: 20,
+        hostsUsed: 12,
       },
     ];
 
