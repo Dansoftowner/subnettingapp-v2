@@ -106,10 +106,11 @@ export class FormComponent implements OnInit {
     const resultInfo: ResultInfo = {
       networkAddress: this.form.get('ip')!.value,
       networkMask: this.form.get('mask')!.value,
-      hostsCounts: this.form
-        .get('hostCounts')!
-        .value.split(',')
-        .map((s: any) => +s),
+      hostsCounts:
+        this.form
+          .get('hostCounts')
+          ?.value?.split(',')
+          ?.map((s: any) => +s) ?? [],
       type: this.form.get('task')!.value,
       entries,
     };
