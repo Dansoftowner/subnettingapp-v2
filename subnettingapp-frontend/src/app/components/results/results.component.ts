@@ -1,31 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPv4Validators } from '../form/ipv4-validators';
-
-export interface Entry {
-  subnetAddress: string;
-  firstHostAddress: string;
-  lastHostAddress: string;
-  broadcastAddress: string;
-  subnetMask: string;
-  subnetMaskBitCount: number;
-  hosts: number;
-  hostsUsed: number;
-}
-
-export enum TaskType {
-  NetworkInfo = 'si',
-  SubnetPartitioning = 'sp',
-  RegularPartitioning = 'rp',
-}
-
-export interface ResultInfo {
-  networkAddress: string;
-  networkMask: string;
-  type: TaskType;
-  hostsCounts: number[];
-  entries: Entry[];
-}
+import { SubnetEntry } from '../../models/SubnetEntry.model';
+import { ResultInfo } from '../../models/ResultInfo.model';
 
 @Component({
   selector: 'app-results',
@@ -34,7 +11,7 @@ export interface ResultInfo {
 })
 export class ResultsComponent implements OnInit {
   resultInfo: ResultInfo;
-  entries: Entry[] = [];
+  entries: SubnetEntry[] = [];
 
   constructor(private router: Router) {
     this.resultInfo =

@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IPv4Validators as IPv4Validators } from './ipv4-validators';
 import { Router } from '@angular/router';
-import { Entry, ResultInfo } from '../results/results.component';
+import { ResultInfo } from '../../models/ResultInfo.model';
+import { SubnetEntry } from '../../models/SubnetEntry.model';
 
 @Component({
   selector: 'app-form',
@@ -69,7 +70,7 @@ export class FormComponent implements OnInit {
       return;
     }
 
-    const entries: Entry[] = [
+    const entries: SubnetEntry[] = [
       {
         subnetAddress: '192.168.1.0',
         firstHostAddress: '192.168.1.1',
