@@ -1,59 +1,5 @@
 @import url("fonts.css");
 
-
-/* Results page */
-
-.container .count-label {
-    text-align: center;
-}
-
-.entry {
-    display: block;
-    transition: box-shadow .2s;
-    padding: 5px 10px;
-    border-radius: 5px;
-    width: auto;
-    border: 1px solid;
-    margin-bottom: 15px;
-    border-width: 0px
-}
-
-.entry table {
-    display: inline;
-    border-collapse: separate;
-    border-spacing: 10px;
-}
-
-.entry p {
-    display: inline;
-}
-
-.index-label {
-    display: inline;
-    padding: 0.3em 0.5em;
-    border-radius: 5px;
-    float: right;
-    text-align: center;
-    margin: 0;
-    margin-top: 5px;
-}
-
-.entry .abbr-label {
-    display: none;
-}
-
-/* Phone devices */
-@media screen and (max-width: 425px) {
-
-    .entry label {
-        display: none;
-    }
-
-    .entry .abbr-label {
-        display: inline;
-    }
-}
-
 /* Config page */
 #configPage {
     margin-bottom: 10px;

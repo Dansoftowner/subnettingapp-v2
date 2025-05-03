@@ -1,0 +1,45 @@
+<div class="container">
+  <p class="count-label">
+    Subnets: <strong>{{ entries.length }}</strong>
+  </p>
+  <div class="entry" *ngFor="let entry of entries; let i = index">
+    <p class="index-label">{{ i + 1 }}</p>
+    <table>
+      <tr>
+        <td class="label">
+          <label>Subnet address:</label>
+          <label class="abbr-label">A:</label>
+        </td>
+        <td class="value">{{ entry.subnetAddress }}</td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>First host address:</label>
+          <label class="abbr-label">F:</label>
+        </td>
+        <td class="value">{{ entry.firstHostAddress }}</td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Last host address:</label>
+          <label class="abbr-label">L:</label>
+        </td>
+        <td class="value">{{ entry.lastHostAddress }}</td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Broadcast address:</label>
+          <label class="abbr-label">B:</label>
+        </td>
+        <td class="value">{{ entry.broadcastAddress }}</td>
+      </tr>
+      <tr>
+        <td class="label">
+          <label>Mask:</label>
+          <label class="abbr-label">M:</label>
+        </td>
+        <td class="value">{{ entry.subnetMask }}</td>
+      </tr>
+    </table>
+  </div>
+</div>

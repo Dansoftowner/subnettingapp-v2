@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { SubnetValidators as IPv4Validators } from './ipv4-validators';
+import { Router } from '@angular/router';
+import { Entry } from '../results/results.component';
 
 @Component({
   selector: 'app-form',
@@ -10,7 +12,7 @@ import { SubnetValidators as IPv4Validators } from './ipv4-validators';
 export class FormComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private router: Router) {
     this.form = this.fb.group({
       ip: ['', [Validators.required, IPv4Validators.ipv4Address]],
       mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
@@ -66,6 +68,33 @@ export class FormComponent implements OnInit {
       this.form.markAllAsTouched();
       return;
     }
+
+    const entries: Entry[] = [
+      {
+        subnetAddress: '192.168.1.0',
+        firstHostAddress: '192.168.1.1',
+        lastHostAddress: '192.168.1.254',
+        broadcastAddress: '192.168.1.255',
+        subnetMask: '255.255.255.0',
+      },
+      {
+        subnetAddress: '10.0.0.0',
+        firstHostAddress: '10.0.0.1',
+        lastHostAddress: '10.0.0.14',
+        broadcastAddress: '10.0.0.15',
+        subnetMask: '255.255.255.240',
+      },
+      {
+        subnetAddress: '172.16.0.0',
+        firstHostAddress: '172.16.0.1',
+        lastHostAddress: '172.16.0.126',
+        broadcastAddress: '172.16.0.127',
+        subnetMask: '255.255.255.128',
+      },
+    ];
+
+    this.router.navigate(['/results'], { state: { entries } });
+
     // proceed with valid data
     console.log(this.form.value);
   }
