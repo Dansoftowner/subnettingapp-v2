@@ -1,0 +1,44 @@
+.footer {
+  padding: 5px;
+  position: fixed;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  color: white;
+}
+
+.footer-separator {
+  height: 10px;
+}
+
+.footer .left {
+  display: inline;
+  float: left;
+  padding: 0 10px 0 0;
+  text-align: left;
+}
+
+.footer .right {
+  display: inline;
+  float: right;
+  padding: 0 10px 0 0;
+  text-align: right;
+}
+
+.footer a {
+  transition: color 0.3s;
+  text-decoration: none;
+  margin: 0;
+}
+
+.footer hr {
+  display: inline;
+  width: 1px;
+  height: 3px;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.footer label {
+  padding: 0 3px 0 3px;
+}

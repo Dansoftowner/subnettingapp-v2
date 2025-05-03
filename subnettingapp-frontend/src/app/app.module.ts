@@ -9,13 +9,15 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { FormComponent } from './components/form/form.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ResultsComponent } from './components/results/results.component';
+import { HeaderComponent } from './components/header/header.component';
+import { FooterComponent } from './components/footer/footer.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ResultsComponent],
+  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
