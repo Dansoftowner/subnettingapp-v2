@@ -2,6 +2,12 @@
   overflow: hidden;
   padding-left: 20px;
   padding-top: 20px;
+  padding-bottom: 20px;
+
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1000;
 }
 
 .header .logo {
