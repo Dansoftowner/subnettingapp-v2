@@ -1,3 +1,16 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+  margin-bottom: 10px;
+
+  padding-bottom: 3rem;
+  box-sizing: border-box;
+}
+
 .container .count-label {
   text-align: center;
 }
@@ -7,9 +20,10 @@
   transition: box-shadow 0.2s;
   padding: 5px 10px;
   border-radius: 5px;
-  width: auto;
+  width: 90%;
+  max-width: 600px;
+  margin: 0 auto;
   border: 1px solid;
-  margin-bottom: 15px;
   border-width: 0px;
 }
 

@@ -49,7 +49,9 @@
             "results.entry.mask.abbr" | translate
           }}</label>
         </td>
-        <td class="value">{{ entry.subnetMask }}</td>
+        <td class="value">
+          {{ entry.subnetMask }} (/{{ entry.subnetMaskBitCount }})
+        </td>
       </tr>
     </table>
     <div class="regular-hosts-indication">
