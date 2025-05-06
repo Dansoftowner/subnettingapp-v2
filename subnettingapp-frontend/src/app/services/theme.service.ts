@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-type Theme = 'light' | 'dark' | 'auto';
+export type Theme = 'light' | 'dark' | 'auto';
 
 @Injectable({
   providedIn: 'root',
@@ -12,16 +12,15 @@ export class ThemeService {
 
   private readonly storageKey = 'app-theme';
 
-  constructor() {
-    this.initTheme();
+  constructor() {}
+
+  refresh() {
+    this.setTheme(this.getCurrentTheme());
   }
 
-  initTheme() {
-    const saved = (localStorage.getItem(this.storageKey) as Theme) || 'auto';
-    this.setTheme(saved);
+  getCurrentTheme(): Theme {
+    return (localStorage.getItem(this.storageKey) as Theme) || 'auto';
   }
-
-  /** Témapreferencia beállítása */
   setTheme(theme: Theme) {
     localStorage.setItem(this.storageKey, theme);
     switch (theme) {
