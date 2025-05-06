@@ -11,13 +11,14 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { ResultsComponent } from './components/results/results.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
+import { SettingsComponent } from './components/settings/settings.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent],
+  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent, SettingsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -4,6 +4,7 @@ import { IPv4Validators as IPv4Validators } from './ipv4-validators';
 import { Router } from '@angular/router';
 import { ResultInfo } from '../../models/ResultInfo.model';
 import { SubnetEntry } from '../../models/SubnetEntry.model';
+import { SettingsService } from 'src/app/services/settings.service';
 
 @Component({
   selector: 'app-form',
@@ -13,7 +14,11 @@ import { SubnetEntry } from '../../models/SubnetEntry.model';
 export class FormComponent implements OnInit {
   form: FormGroup;
 
-  constructor(private fb: FormBuilder, private router: Router) {
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private settingsService: SettingsService
+  ) {
     this.form = this.fb.group({
       ip: ['', [Validators.required, IPv4Validators.ipv4Address]],
       mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
@@ -57,11 +62,20 @@ export class FormComponent implements OnInit {
   }
 
   get autoMaskEnabled(): boolean {
-    return true; //this.cookieService.get('auto_mask') !== 'false';
+    let autoMaskEnabled!: boolean;
+    this.settingsService
+      .getAutoMaskEnabled()
+      .subscribe((val) => (autoMaskEnabled = val));
+    return autoMaskEnabled;
   }
 
   get autoMaskFormatDDN(): boolean {
-    return false; //this.cookieService.get('auto_mask_format') === 'ddn';
+    let autoMaskFormat!: string;
+    this.settingsService
+      .getCurrentMaskFormat()
+      .subscribe((val) => (autoMaskFormat = val));
+    console.log(autoMaskFormat);
+    return autoMaskFormat == 'ddn';
   }
 
   onSubmit(): void {

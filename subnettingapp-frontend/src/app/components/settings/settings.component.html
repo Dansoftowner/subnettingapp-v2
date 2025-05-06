@@ -1,0 +1,76 @@
+<div class="container config-page-container">
+  <form>
+    <div>
+      <h2>{{ "settings" | translate }}</h2>
+    </div>
+    <div id="configPage">
+      <div class="group-page">
+        <span class="group-span"
+          >{{ "settings.group.general" | translate }}:</span
+        >
+        <div class="form-group">
+          <label for="theme-select">{{ "settings.theme" | translate }}:</label>
+          <select id="theme-select" (change)="onThemeChange($event)">
+            <option
+              *ngFor="let theme of themes"
+              [value]="theme.value"
+              [selected]="selectedTheme == theme.value"
+            >
+              {{ theme.i18nKey | translate }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="language-select"
+            >{{ "settings.language" | translate }}:</label
+          >
+          <select id="language-select" (change)="onLanguageChange($event)">
+            <option
+              *ngFor="let lang of languages"
+              [value]="lang.value"
+              [selected]="lang.value == selectedLanguage"
+            >
+              {{ lang.i18nKey | translate }}
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="group-page">
+        <span class="group-span"
+          >{{ "settings.group.auto_mask" | translate }}:</span
+        >
+        <div class="form-group">
+          <label for="auto_mask-check"
+            >{{ "settings.auto_mask" | translate }}:</label
+          >
+          <input
+            id="auto_mask-check"
+            type="checkbox"
+            [checked]="autoMaskEnabled"
+            (change)="onAutoMaskChange($event)"
+          />
+        </div>
+
+        <div class="form-group" *ngIf="autoMaskEnabled">
+          <label for="auto_mask_format-select"
+            >{{ "settings.auto_mask_format" | translate }}:</label
+          >
+          <select
+            id="auto_mask_format-select"
+            (change)="onMaskFormatChange($event)"
+          >
+            <option
+              *ngFor="let format of maskFormats"
+              [value]="format.value"
+              [selected]="format.value == selectedMaskFormat"
+            >
+              {{ format.i18nKey | translate }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
