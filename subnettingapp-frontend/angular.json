@@ -67,10 +67,7 @@
             "styles": [
               "src/styles.css",
               "src/assets/stylesheets/base.css",
-              "src/assets/stylesheets/fonts.css",
-              "src/assets/stylesheets/light.css",
-              "src/assets/stylesheets/dark.css",
-              "src/assets/stylesheets/auto.css"
+              "src/assets/stylesheets/fonts.css"
             ],
             "scripts": []
           },
