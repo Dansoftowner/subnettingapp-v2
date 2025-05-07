@@ -1,0 +1,11 @@
+{
+    "mongo": {
+        "uri": "mongodb://127.0.0.1/subnettingapp_tests"
+    },
+    "jwt": {
+        "secret": "subnettingapp_test"
+    },
+    "frontend": {
+        "host": "http://localhost"
+    }
+}

@@ -1,0 +1,22 @@
+{
+    "jwt": {
+        "secret": "",
+        "headerName": "x-auth-header"
+    },
+    "headers": {
+        "currentPass": "x-current-pass"
+    },
+    "smtp": {
+        "host": "",
+        "port": 25,
+        "secure": false,
+        "auth": {
+            "user": "",
+            "pass": ""
+        },
+        "from": ""
+    },
+    "frontend": {
+        "host": ""
+    }
+}

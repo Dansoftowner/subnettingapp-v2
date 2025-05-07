@@ -1,0 +1,13 @@
+{
+    "mongo": {
+        "uri": "mongodb://127.0.0.1/subnettingap_dev"
+    },
+    "jwt": {
+        "secret": "subnettingapp_dev"
+    },
+    "smtp": {
+        "host": "sandbox.smtp.mailtrap.io",
+        "port": 2525,
+        "from": "subnettingapp-dev@subnettingapp.com"
+    }
+}

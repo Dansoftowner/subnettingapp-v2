@@ -1,0 +1,21 @@
+{
+    "mongo": {
+        "uri": "SUBNETTINGAPP_MONGO_URI"
+    },
+    "jwt": {
+        "secret": "SUBNETTINGAPP_JWT_KEY"
+    },
+    "frontend": {
+        "host": "SUBNETTINGAPP_FRONTEND_HOST"
+    },
+    "smtp": {
+        "host": "SUBNETTINGAPP_SMTP_HOST",
+        "port": "SUBNETTINGAPP_SMTP_PORT",
+        "secure": "SUBNETTINGAPP_SMTP_SECURE",
+        "auth": {
+            "user": "SUBNETTINGAPP_SMTP_USER",
+            "pass": "SUBNETTINGAPP_SMTP_PASS"
+        },
+        "from": "SUBNETTINGAPP_SMTP_FROM"
+    }
+}
