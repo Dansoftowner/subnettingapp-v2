@@ -1,6 +1,8 @@
 import 'dotenv/config';
 import express from 'express';
 import mongoose from 'mongoose';
+import morgan from 'morgan';
+import cors, { CorsOptions } from 'cors';
 import authRoutes from './routes/auth.routes';
 import config from 'config';
 import errorMiddleware from './middlewares/error.middleware';
@@ -8,8 +10,17 @@ import errorMiddleware from './middlewares/error.middleware';
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+const corsConfig: CorsOptions = {
+  origin: process.env.NODE_ENV === 'development' || config.get('frontend.host'),
+  credentials: true,
+  exposedHeaders: [config.get('jwt.headerName')],
+};
+
+app.use(cors(corsConfig));
+app.use(morgan('combined'));
+
 app.use(express.json());
-app.use(authRoutes);
+app.use('/api', authRoutes);
 
 app.use(errorMiddleware);
 

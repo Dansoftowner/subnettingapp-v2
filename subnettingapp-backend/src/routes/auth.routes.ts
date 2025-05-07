@@ -8,7 +8,7 @@ const router = Router();
 const JWT_SECRET: string = config.get('jwt.secret');
 
 router.post(
-  '/api/registration',
+  '/registration',
   asyncErrorHandler(async (req: Request, res: Response) => {
     const { fullName, email, password } = req.body;
     const existing = await User.findOne({ email });
@@ -28,7 +28,7 @@ router.post(
 );
 
 router.post(
-  '/api/login',
+  '/login',
   asyncErrorHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
