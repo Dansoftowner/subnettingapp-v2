@@ -6,6 +6,9 @@
     "headers": {
         "currentPass": "x-current-pass"
     },
+    "crypto": {
+        "bcryptRounds": 10
+    },
     "smtp": {
         "host": "",
         "port": 25,

@@ -25,13 +25,13 @@ app.use('/api', authRoutes);
 
 app.use(errorMiddleware);
 
-mongoose
-  .connect(config.get('mongo.uri'))
-  .then(() => {
-    logger.info('MongoDB connected');
-    if (process.env.NODE_ENV != 'test')
+if (process.env.NODE_ENV != 'test')
+  mongoose
+    .connect(config.get('mongo.uri'))
+    .then(() => {
+      logger.info('MongoDB connected');
       app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
-  })
-  .catch((err) => logger.error(err));
+    })
+    .catch((err) => logger.error(err));
 
 export { app };
