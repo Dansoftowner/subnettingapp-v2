@@ -1,0 +1,74 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+form {
+  border-radius: 5px;
+  padding: 5px;
+  transition: box-shadow 0.2s;
+
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  max-width: 400px;
+  padding: 1rem;
+  margin-bottom: 10px;
+}
+
+form h2 {
+  text-align: center;
+}
+
+form label {
+  font-weight: bold;
+}
+
+form input[type="text"],
+form input[type="password"] {
+  transition: outline 0.2s;
+  border-width: 0;
+  padding: 10px;
+  border-radius: 5px;
+  font: inherit;
+}
+
+form button[type="submit"] {
+  padding: 10px;
+  width: 100%;
+  transition: background-color 0.3s;
+  border-width: 0;
+  border-radius: 5px;
+  font: inherit;
+}
+
+form button[type="submit"]:hover {
+  cursor: pointer;
+}
+
+form button[type="submit"]:disabled {
+  opacity: 0.5;
+}
+
+form input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 1.05em;
+  height: 1.05em;
+  border-radius: 50%;
+  transition: background-color 0.2s;
+  transition: opacity 0.2s;
+  opacity: 0.8;
+  transition: background 0.2s;
+  margin-right: 10px;
+}
+
+form input[type="radio"]:hover {
+  cursor: pointer;
+  opacity: 1;
+}
+
+form .abbr-label {
+  display: none;
+}

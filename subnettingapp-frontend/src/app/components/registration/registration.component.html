@@ -1,0 +1,76 @@
+<div class="container">
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="form">
+    <h2>{{ "registration.title" | translate }}</h2>
+    <div *ngIf="error" class="error">{{ error }}</div>
+
+    <label> {{ "registration.form.fullname" | translate }}: </label>
+    <input
+      type="text"
+      formControlName="fullName"
+      [placeholder]="'registration.placeholder.fullname' | translate"
+    />
+
+    <div
+      *ngIf="
+        registerForm.get('fullName')?.invalid &&
+        registerForm.get('fullName')?.touched
+      "
+      class="error"
+    >
+      {{ "registration.validation.fullname_required" | translate }}
+    </div>
+
+    <label> {{ "registration.form.email" | translate }}: </label>
+    <input
+      type="text"
+      formControlName="email"
+      [placeholder]="'registration.placeholder.email' | translate"
+    />
+    <div
+      *ngIf="
+        registerForm.get('email')?.invalid && registerForm.get('email')?.touched
+      "
+      class="error"
+    >
+      {{ "registration.validation.email_invalid" | translate }}
+    </div>
+
+    <label> {{ "registration.form.password" | translate }}: </label>
+    <input
+      type="password"
+      formControlName="password"
+      [placeholder]="'registration.placeholder.password' | translate"
+    />
+
+    <div
+      *ngIf="
+        registerForm.get('password')?.invalid &&
+        registerForm.get('password')?.touched
+      "
+      class="error"
+    >
+      {{ "registration.validation.password_minlength" | translate }}
+    </div>
+
+    <label> {{ "registration.form.confirm_password" | translate }}: </label>
+    <input
+      type="password"
+      formControlName="confirmPassword"
+      [placeholder]="'registration.placeholder.confirm_password' | translate"
+    />
+
+    <div
+      *ngIf="
+        registerForm.hasError('mismatch') &&
+        registerForm.get('confirmPassword')?.touched
+      "
+      class="error"
+    >
+      {{ "registration.validation.passwords_mismatch" | translate }}
+    </div>
+
+    <button type="submit" [disabled]="registerForm.invalid">
+      {{ "registration.button" | translate }}
+    </button>
+  </form>
+</div>
