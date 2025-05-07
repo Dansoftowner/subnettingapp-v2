@@ -3,6 +3,7 @@ import jwt from 'jsonwebtoken';
 import config from 'config';
 import asyncErrorHandler from '../middlewares/async-error-handler';
 import { User } from '../models/user.model';
+import { ApiError } from '../error/api-error';
 
 const router = Router();
 const JWT_SECRET: string = config.get('jwt.secret');
@@ -32,14 +33,10 @@ router.post(
   asyncErrorHandler(async (req: Request, res: Response) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+    if (!user) throw new ApiError(401, 'Invalid credentials');
 
     const isMatch = await user.comparePassword(password);
-    if (!isMatch) {
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
+    if (!isMatch) throw new ApiError(401, 'Invalid credentials');
 
     const payload = {
       id: user._id,
@@ -49,6 +46,7 @@ router.post(
     const token = jwt.sign(payload, JWT_SECRET, { expiresIn: '1h' });
 
     res.setHeader(config.get('jwt.headerName'), token);
+
     return res.json({
       id: user._id,
       fullName: user.fullName,

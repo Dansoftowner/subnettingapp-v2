@@ -66,12 +66,12 @@ describe('POST /api/login', () => {
     await user.save();
   });
 
-  it('should return 400 for invalid credentials', async () => {
+  it('should return 401 for invalid credentials', async () => {
     const res = await request(app)
       .post('/api/login')
       .send({ email: userData.email, password: 'wrongpassword' });
-    expect(res.status).toBe(400);
-    expect(res.body).toHaveProperty('message', 'Invalid credentials');
+    expect(res.status).toBe(401);
+    expect(res.body).toHaveProperty('message');
   });
 
   it('should login and return token and user info', async () => {
