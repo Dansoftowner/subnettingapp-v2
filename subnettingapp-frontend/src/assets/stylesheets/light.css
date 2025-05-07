@@ -43,21 +43,25 @@ form label {
   color: #8a6d06;
 }
 
-form input[type="text"] {
+form input[type="text"],
+form input[type="password"] {
   background-color: rgb(226, 226, 226);
   color: rgb(36, 35, 35);
 }
 
-form input[type="text"]:focus {
+form input[type="text"]:focus,
+form input[type="password"]:focus {
   outline: 3px solid rgb(121, 121, 121);
 }
 
-form button[type="submit"] {
+form button[type="submit"],
+.header-actions button {
   background-color: lightgray;
   color: rgb(36, 35, 35);
 }
 
-form button[type="submit"]:hover {
+form button[type="submit"]:hover,
+.header-actions button:hover {
   background-color: var(--accent-color);
   color: #2c2e31;
 }
@@ -78,9 +82,14 @@ form hr {
   border: none;
 }
 
-form input[type="text"].error {
+form input[type="text"].error,
+form input[type="password"].error {
   color: red;
   outline: red solid 2px;
+}
+
+div.error {
+  color: red;
 }
 
 /* Results page */
