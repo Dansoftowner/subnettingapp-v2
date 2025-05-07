@@ -36,5 +36,9 @@
     <button type="submit" [disabled]="loginForm.invalid">
       {{ "login.button" | translate }}
     </button>
+    <p class="bottom">
+      {{ "login.no_account" | translate }}
+      <a routerLink="/register">{{ "login.no_account_link" | translate }}</a>
+    </p>
   </form>
 </div>

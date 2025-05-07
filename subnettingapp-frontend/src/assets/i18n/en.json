@@ -64,5 +64,7 @@
     "login.validation.password_required": "Password is required.",
     "login.button": "Login",
     "login.error": "Login failed",
+    "login.no_account": "Don't have an account?",
+    "login.no_account_link": "Register here",
     "header.logout": "Log out"
-  }
+}

@@ -64,5 +64,7 @@
     "login.validation.password_required": "A jelszó megadása kötelező.",
     "login.button": "Bejelentkezés",
     "login.error": "A bejelentkezés sikertelen",
+    "login.no_account": "Még nincs fiókod?",
+    "login.no_account_link": "Regisztrálj itt",
     "header.logout": "Kijelentkezés"
-  }
+}

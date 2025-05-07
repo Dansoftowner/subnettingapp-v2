@@ -73,3 +73,12 @@ form input[type="radio"]:hover {
 form .abbr-label {
   display: none;
 }
+
+.bottom {
+  font-size: 0.8em;
+  text-align: center;
+}
+
+.bottom a {
+    color: rgb(10, 136, 209);
+}
