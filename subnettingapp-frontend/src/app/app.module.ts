@@ -12,13 +12,15 @@ import { ResultsComponent } from './components/results/results.component';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { LoginComponent } from './components/login/login.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent, SettingsComponent],
+  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent, SettingsComponent, RegistrationComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

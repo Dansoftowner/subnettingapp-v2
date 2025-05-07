@@ -3,11 +3,30 @@ import { RouterModule, Routes } from '@angular/router';
 import { FormComponent } from './components/form/form.component';
 import { ResultsComponent } from './components/results/results.component';
 import { SettingsComponent } from './components/settings/settings.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegistrationComponent } from './components/registration/registration.component';
+import { authGuard } from './guards/auth.guard';
+import { unauthGuard } from './guards/unauth.guard';
 
 const routes: Routes = [
-  { path: '', component: FormComponent },
-  { path: 'results', component: ResultsComponent },
+  { path: 'form', component: FormComponent, canActivate: [authGuard] },
+  { path: 'login', component: LoginComponent, canActivate: [unauthGuard] },
+  {
+    path: 'register',
+    component: RegistrationComponent,
+    canActivate: [unauthGuard],
+  },
+  { path: 'results', component: ResultsComponent, canActivate: [authGuard] },
   { path: 'settings', component: SettingsComponent },
+  { path: '', redirectTo: '/form', pathMatch: 'full' },
+  { path: '**', redirectTo: '/form' },
+
+  /* 
+  TODO: dashboard component
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
+  { path: '**', redirectTo: '/dashboard' }
+    */
 ];
 
 @NgModule({
