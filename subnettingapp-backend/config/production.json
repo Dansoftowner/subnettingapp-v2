@@ -2,6 +2,7 @@
     "smtp": {
         "host": "smtp-relay.brevo.com",
         "port": 587,
-        "from": "subnettingapp@no-reply.hu"
+        "from": "subnettingapp@no-reply.hu",
+        "secure": false
     }
 }
