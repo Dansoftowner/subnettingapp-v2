@@ -66,5 +66,22 @@
     "login.error": "A bejelentkezés sikertelen",
     "login.no_account": "Még nincs fiókod?",
     "login.no_account_link": "Regisztrálj itt",
-    "header.logout": "Kijelentkezés"
+    "header.logout": "Kijelentkezés",
+    "forgottenPassword.link": "Elfejtettem a jelszavam",
+    "forgottenPassword.titleRequest": "Jelszó visszaállítása",
+    "forgottenPassword.emailLabel": "Email cím",
+    "forgottenPassword.sendButton": "Visszaállító link küldése",
+    "forgottenPassword.successRequest": "Ha a megadott email cím regisztrálva van, egy visszaállító linket küldtünk.",
+    "forgottenPassword.titleReset": "Új jelszó megadása",
+    "forgottenPassword.passwordLabel": "Jelszó",
+    "forgottenPassword.confirmPasswordLabel": "Jelszó megerősítése",
+    "forgottenPassword.resetButton": "Jelszó visszaállítása",
+    "forgottenPassword.successReset": "A jelszó sikeresen visszaállítva.",
+    "error.generic": "Hiba történt. Kérlek próbáld újra.",
+    "error.required": "A mező kitöltése kötelező.",
+    "error.emailInvalid": "Kérlek valós email címet adj meg.",
+    "error.minLength": "A mező minimum {{min}} karakter hosszú legyen.",
+    "error.passwordMismatch": "A jelszavak nem egyeznek.",
+    "error.invalidToken": "Érvénytelen vagy lejárt token.",
+    "error.userNotFound": "A felhasználó nem található."
 }

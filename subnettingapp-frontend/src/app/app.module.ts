@@ -14,13 +14,14 @@ import { FooterComponent } from './components/footer/footer.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { LoginComponent } from './components/login/login.component';
+import { PasswordRestorationComponent } from './components/password-restoration/password-restoration.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/i18n/', '.json');
 }
 
 @NgModule({
-  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent, SettingsComponent, RegistrationComponent, LoginComponent],
+  declarations: [AppComponent, FormComponent, ResultsComponent, HeaderComponent, FooterComponent, SettingsComponent, RegistrationComponent, LoginComponent, PasswordRestorationComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,

@@ -7,6 +7,7 @@ import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { authGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
+import { PasswordRestorationComponent } from './components/password-restoration/password-restoration.component';
 
 const routes: Routes = [
   { path: 'form', component: FormComponent, canActivate: [authGuard] },
@@ -18,6 +19,13 @@ const routes: Routes = [
   },
   { path: 'results', component: ResultsComponent, canActivate: [authGuard] },
   { path: 'settings', component: SettingsComponent },
+
+  { path: 'forgotten-password', component: PasswordRestorationComponent },
+  {
+    path: 'forgotten-password/:userId/:passwordtoken',
+    component: PasswordRestorationComponent,
+  },
+
   { path: '', redirectTo: '/form', pathMatch: 'full' },
   { path: '**', redirectTo: '/form' },
 
