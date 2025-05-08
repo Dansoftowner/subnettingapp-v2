@@ -17,7 +17,7 @@ const PasswordTokenSchema = new Schema<IPasswordToken>(
   { timestamps: { createdAt: true, updatedAt: false } },
 );
 
-PasswordTokenSchema.index({ createdAt: 1 }, { expires: '24h' });
+PasswordTokenSchema.index({ createdAt: 1 }, { expires: '1h' });
 
 PasswordTokenSchema.pre('save', async function (next) {
   if (!this.isModified('token')) return next();
