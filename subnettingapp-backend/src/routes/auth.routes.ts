@@ -68,6 +68,8 @@ router.post(
     const user = await User.findOne({ email });
 
     if (user) {
+      await PasswordToken.deleteMany({ userId: user._id });
+
       const token = crypto.randomBytes(32).toString('hex');
       await new PasswordToken({ userId: user._id, token }).save();
 

@@ -162,6 +162,30 @@ describe('POST /api/forgotten-password', () => {
     const record = await PasswordToken.findOne({ userId });
     expect(record).not.toBeNull();
   });
+
+  it('should not create multiple reset tokens for the same email', async () => {
+    const email = userData.email;
+
+    const res1 = await request(app)
+      .post('/api/forgotten-password')
+      .send({ email });
+    expect(res1.status).toBe(202);
+
+    const afterFirst = await User.findOne({ email });
+    expect(afterFirst).not.toBeNull();
+    const token = await PasswordToken.findOne({ userId });
+    expect(token).not.toBeNull();
+
+    const res2 = await request(app)
+      .post('/api/forgotten-password')
+      .send({ email });
+    expect(res2.status).toBe(202);
+
+    const tokens = await PasswordToken.find({});
+
+    // A tokeneknek egyezniük kell
+    expect(tokens).toHaveLength(1);
+  });
 });
 
 describe('POST /api/forgotten-password/:userId/:token', () => {
