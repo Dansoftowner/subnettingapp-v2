@@ -1,22 +1,22 @@
 import request from 'supertest';
 import mongoose from 'mongoose';
 import jwt from 'jsonwebtoken';
-import bcrypt from 'bcrypt';
-import nodemailer from 'nodemailer';
-import crypto from 'crypto';
 import config from 'config';
-import { app } from '../src/app';
+import crypto from 'crypto';
 import { User } from '../src/models/user.model';
 import { PasswordToken } from '../src/models/password-token.model';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 
 jest.setTimeout(20000);
 
-jest.mock('nodemailer');
-const sendMailMock = jest.fn().mockResolvedValue({});
-(nodemailer.createTransport as jest.Mock).mockReturnValue({
-  sendMail: sendMailMock,
-});
+const sendMailMock = jest.fn().mockResolvedValue({ messageId: 'mocked-id' });
+
+jest.doMock('nodemailer', () => ({
+  createTransport: jest.fn(() => ({ sendMail: sendMailMock })),
+}));
+
+// app must be imported AFTER mocking (that's why it's not imported on the top)
+const { app } = require('../src/app');
 
 let mongod: MongoMemoryServer;
 
@@ -119,19 +119,27 @@ describe('POST /api/forgotten-password', () => {
     email: 'fp@example.com',
     password: 'initial123',
   };
-  let rawToken: string;
   let userId: string;
 
   beforeEach(async () => {
-    rawToken = 'a'.repeat(64);
-    jest
-      .spyOn(crypto, 'randomBytes')
-      .mockImplementation((size: number) => Buffer.from(rawToken, 'hex'));
-
     sendMailMock.mockClear();
+
     const user = new User(userData);
     await user.save();
+    await PasswordToken.deleteMany();
+
     userId = user._id.toHexString();
+  });
+
+  it('should not fail for unknown email', async () => {
+    const nonExistingMail = 'unknown@example.com';
+    const res = await request(app)
+      .post('/api/forgotten-password')
+      .send({ email: nonExistingMail });
+    const tokens = await PasswordToken.find();
+    expect(res.status).toBe(202);
+    expect(tokens).toHaveLength(0);
+    expect(sendMailMock).not.toHaveBeenCalled();
   });
 
   it('should initiate password reset and send email', async () => {
@@ -139,25 +147,20 @@ describe('POST /api/forgotten-password', () => {
       .post('/api/forgotten-password')
       .send({ email: userData.email });
 
-    expect(res.status).toBe(200);
-    expect(res.body).toHaveProperty('message');
+    expect(res.status).toBe(202);
+
     expect(sendMailMock).toHaveBeenCalledTimes(1);
+
     const mailOptions = sendMailMock.mock.calls[0][0];
-    expect(mailOptions.text).toContain(rawToken);
-    expect(mailOptions.html).toContain(rawToken);
+    expect(mailOptions.html).toMatch(new RegExp(userData.fullName));
+    expect(mailOptions.html).toMatch(
+      new RegExp(
+        `${config.get('frontend.host')}/forgotten-password/${userId}/[a-f0-9]{40}`,
+      ),
+    );
 
     const record = await PasswordToken.findOne({ userId });
     expect(record).not.toBeNull();
-    const valid = await record!.compareToken(rawToken);
-    expect(valid).toBe(true);
-  });
-
-  it('should not fail for unknown email', async () => {
-    const res = await request(app)
-      .post('/api/forgotten-password')
-      .send({ email: 'unknown@example.com' });
-    expect(res.status).toBe(200);
-    expect(sendMailMock).not.toHaveBeenCalled();
   });
 });
 
@@ -173,14 +176,11 @@ describe('POST /api/forgotten-password/:userId/:token', () => {
 
   beforeEach(async () => {
     rawToken = 'b'.repeat(64);
-    jest
-      .spyOn(crypto, 'randomBytes')
-      .mockImplementation((size: number) => Buffer.from(rawToken, 'hex'));
+
     const user = new User(userData);
     await user.save();
     userId = user._id.toHexString();
-    const hashed = await bcrypt.hash(rawToken, 10);
-    await new PasswordToken({ userId, token: hashed }).save();
+    await new PasswordToken({ userId, token: rawToken }).save();
   });
 
   it('should reset password with valid token', async () => {

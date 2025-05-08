@@ -71,13 +71,13 @@ router.post(
       const token = crypto.randomBytes(32).toString('hex');
       await new PasswordToken({ userId: user._id, token }).save();
 
-      const resetLink = `${req.protocol}://${req.get('host')}/forgotten-password/${user._id}/${token}`;
+      const resetLink = `${config.get('frontend.host')}/forgotten-password/${user._id}/${token}`;
       await mailTransporter.sendMail({
-        from: config.get('email.from'),
+        from: config.get('smtp.from'),
         to: email,
         subject: 'Password Reset',
-        text: `Click the following link to reset your password: ${resetLink}`,
-        html: `<p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+        text: `Hi ${user.fullName}! Click the following link to reset your password: ${resetLink}`,
+        html: `Hi ${user.fullName}! <p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
       });
     }
     res.status(202).json({
