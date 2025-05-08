@@ -8,20 +8,11 @@ import nodemailer from 'nodemailer';
 import { User } from '../models/user.model';
 import { PasswordToken } from '../models/password-token.model';
 import { ApiError } from '../error/api-error';
+import { mailTransporter, loadMailTemplate } from '../mail-transporter';
 
 const router = Router();
 const JWT_SECRET: string = config.get('jwt.secret');
 const JWT_HEADER: string = config.get('jwt.headerName');
-
-const mailTransporter = nodemailer.createTransport({
-  host: config.get('smtp.host'),
-  port: config.get<number>('smtp.port'),
-  secure: config.get<boolean>('smtp.secure'),
-  auth: {
-    user: config.get('smtp.auth.user'),
-    pass: config.get('smtp.auth.pass'),
-  },
-});
 
 router.post(
   '/registration',
@@ -74,12 +65,19 @@ router.post(
       await new PasswordToken({ userId: user._id, token }).save();
 
       const resetLink = `${config.get('frontend.host')}/forgotten-password/${user._id}/${token}`;
+
       await mailTransporter.sendMail({
         from: config.get('smtp.from'),
         to: email,
-        subject: 'Password Reset',
-        text: `Hi ${user.fullName}! Click the following link to reset your password: ${resetLink}`,
-        html: `Hi ${user.fullName}! <p>Click <a href="${resetLink}">here</a> to reset your password.</p>`,
+        subject: 'Jelszó visszaállítás',
+        text: loadMailTemplate('forgot_password.txt', {
+          fullName: user.fullName,
+          resetLink,
+        }),
+        html: loadMailTemplate('forgot_password', {
+          fullName: user.fullName,
+          resetLink,
+        }),
       });
     }
     res.status(202).json({
