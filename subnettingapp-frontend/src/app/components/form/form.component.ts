@@ -91,6 +91,20 @@ export class FormComponent implements OnInit {
     this.form.get('count')!.disable();
   }
 
+  get spMaxCapacity(): number {
+    const maskStr = this.form.get('mask')!.value;
+    const bits = IPv4Validators.maskToBitCount(maskStr) || 0;
+    const hostBits = 32 - bits;
+    return Math.pow(2, hostBits) - 2;
+  }
+
+  get rpMaxCount(): number {
+    const maskStr = this.form.get('mask')!.value;
+    const bits = IPv4Validators.maskToBitCount(maskStr) || 0;
+    const hostBits = 32 - bits;
+    return Math.pow(2, hostBits - 1);
+  }
+
   get autoMaskEnabled(): boolean {
     let enabled = false;
     this.settingsService

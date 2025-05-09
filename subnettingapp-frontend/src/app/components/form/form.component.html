@@ -89,7 +89,8 @@
             type="text"
             formControlName="hostCounts"
             [class.error]="
-              form.get('hostCounts')?.invalid &&
+              (form.get('hostCounts')?.invalid ||
+                form.errors?.['hostsCapacity']) &&
               (form.get('hostCounts')?.dirty || form.get('hostCounts')?.touched)
             "
             placeholder="{{ 'form.hostsCount.prompt' | translate }}"
@@ -136,13 +137,13 @@
     <!-- Form level errors -->
     <div *ngIf="form.errors && (form.dirty || form.touched)" class="error-box">
       <p *ngIf="form.errors['hostsCapacity']">
-        {{ "error.hostsCapacity" | translate }}
+        {{ "error.hostsCapacity" | translate }} ({{ spMaxCapacity }})
       </p>
       <p *ngIf="form.errors['countNotPowerOfTwo']">
         {{ "error.countNotPowerOfTwo" | translate }}
       </p>
       <p *ngIf="form.errors['countExceedsMax']">
-        {{ "error.countExceedsMax" | translate }}
+        {{ "error.countExceedsMax" | translate }} ({{ rpMaxCount }})
       </p>
       <p *ngIf="serverError">{{ serverError | translate }}</p>
     </div>
