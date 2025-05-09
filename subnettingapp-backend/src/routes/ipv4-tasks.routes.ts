@@ -64,6 +64,8 @@ router.post('/ipv4-task/sp', (req: Request, res: Response) => {
     hostsCounts: number[];
   };
 
+  const hostsCountsSorted = hostsCounts.sort((a, b) => b - a);
+
   const base = IPv4Address.parse(`${networkAddress}/${networkMask}`);
   const partitioner = new IPv4SubnetPartitioner(base, hostsCounts);
   const subnets = partitioner.subnets;
@@ -80,7 +82,7 @@ router.post('/ipv4-task/sp', (req: Request, res: Response) => {
       subnetMask: mask.toDotDecimalString(),
       subnetMaskBitCount: mask.bitCount,
       hosts: capacity,
-      hostsUsed: hostsCounts[idx],
+      hostsUsed: hostsCountsSorted[idx],
     };
   });
 
