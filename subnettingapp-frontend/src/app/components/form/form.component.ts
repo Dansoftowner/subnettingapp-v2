@@ -1,10 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { IPv4Validators as IPv4Validators } from './ipv4-validators';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  AbstractControl,
+  ValidationErrors,
+  ValidatorFn,
+} from '@angular/forms';
+import { IPv4Validators } from './ipv4-validators';
 import { Router } from '@angular/router';
 import { ResultInfo } from '../../models/ResultInfo.model';
-import { SubnetEntry } from '../../models/SubnetEntry.model';
 import { SettingsService } from 'src/app/services/settings.service';
+import { Ipv4TaskService } from 'src/app/services/ipv4-task.service';
 
 @Component({
   selector: 'app-form',
@@ -13,33 +20,53 @@ import { SettingsService } from 'src/app/services/settings.service';
 })
 export class FormComponent implements OnInit {
   form: FormGroup;
+  serverError: string | null = null;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
-    private settingsService: SettingsService
+    private settingsService: SettingsService,
+    private ipv4Service: Ipv4TaskService
   ) {
-    this.form = this.fb.group({
-      ip: ['', [Validators.required, IPv4Validators.ipv4Address]],
-      mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
-      task: ['si', Validators.required],
-      hostCounts: [''],
-    });
+    this.form = this.fb.group(
+      {
+        ip: ['', [Validators.required, IPv4Validators.ipv4Address]],
+        mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
+        task: ['si', Validators.required],
+        hostCounts: [''],
+        count: [''],
+      },
+      { validators: this.formLevelValidator() }
+    );
   }
 
   ngOnInit(): void {
-    // toggle hostsCount field
+    // toggle hostsCounts and count fields
     this.form.get('task')!.valueChanges.subscribe((value) => {
       const hosts = this.form.get('hostCounts')!;
+      const count = this.form.get('count')!;
       if (value === 'sp') {
-        hosts.setValidators([IPv4Validators.hostsList]);
+        hosts.setValidators([Validators.required, IPv4Validators.hostsList]);
         hosts.enable();
+        count.clearValidators();
+        count.disable();
+        count.reset();
+      } else if (value === 'rp') {
+        count.setValidators([Validators.required]);
+        count.enable();
+        hosts.clearValidators();
+        hosts.disable();
+        hosts.reset();
       } else {
         hosts.clearValidators();
         hosts.disable();
         hosts.reset();
+        count.clearValidators();
+        count.disable();
+        count.reset();
       }
       hosts.updateValueAndValidity();
+      count.updateValueAndValidity();
     });
 
     // auto-mask on valid IP
@@ -55,83 +82,96 @@ export class FormComponent implements OnInit {
       }
     });
 
-    // initialize hostsCount disabled
-    if (this.form.get('task')!.value !== 'sp') {
-      this.form.get('hostCounts')!.disable();
-    }
+    // initialize hostsCount and count disabled
+    this.form.get('hostCounts')!.disable();
+    this.form.get('count')!.disable();
   }
 
   get autoMaskEnabled(): boolean {
-    let autoMaskEnabled!: boolean;
+    let enabled = false;
     this.settingsService
       .getAutoMaskEnabled()
-      .subscribe((val) => (autoMaskEnabled = val));
-    return autoMaskEnabled;
+      .subscribe((val) => (enabled = val));
+    return enabled;
   }
 
   get autoMaskFormatDDN(): boolean {
-    let autoMaskFormat!: string;
+    let formatDDN = false;
     this.settingsService
       .getCurrentMaskFormat()
-      .subscribe((val) => (autoMaskFormat = val));
-    console.log(autoMaskFormat);
-    return autoMaskFormat == 'ddn';
+      .subscribe((val) => (formatDDN = val === 'ddn'));
+    return formatDDN;
+  }
+
+  formLevelValidator(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const task = group.get('task')!.value;
+      const maskStr = group.get('mask')!.value;
+      const maskBits = IPv4Validators.maskToBitCount(maskStr) || 0;
+      const hostBits = 32 - maskBits;
+
+      if (task === 'sp') {
+        const v = group.get('hostCounts')!.value as string;
+        if (v) {
+          const counts = v.split(',').map((s) => +s);
+          const totalCapacity = Math.pow(2, hostBits);
+          const required = counts.reduce(
+            (sum, c) => sum + Math.pow(2, Math.ceil(Math.log2(c + 2))),
+            0
+          );
+          if (required > totalCapacity) {
+            return { hostsCapacity: true };
+          }
+        }
+      }
+
+      if (task === 'rp') {
+        const countVal = +group.get('count')!.value;
+        if (countVal > 0) {
+          const maxCount = Math.pow(2, hostBits - 1);
+          if ((countVal & (countVal - 1)) !== 0) {
+            return { countNotPowerOfTwo: true };
+          }
+          if (countVal > maxCount) {
+            return { countExceedsMax: true };
+          }
+        }
+      }
+
+      return null;
+    };
   }
 
   onSubmit(): void {
+    this.serverError = null;
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
 
-    const entries: SubnetEntry[] = [
-      {
-        subnetAddress: '192.168.1.0',
-        firstHostAddress: '192.168.1.1',
-        lastHostAddress: '192.168.1.254',
-        broadcastAddress: '192.168.1.255',
-        subnetMask: '255.255.255.0',
-        subnetMaskBitCount: 24,
-        hosts: Math.pow(2, 8) - 2,
-        hostsUsed: 120,
-      },
-      {
-        subnetAddress: '10.0.0.0',
-        firstHostAddress: '10.0.0.1',
-        lastHostAddress: '10.0.0.14',
-        broadcastAddress: '10.0.0.15',
-        subnetMask: '255.255.255.240',
-        subnetMaskBitCount: 28,
-        hosts: Math.pow(2, 4) - 2,
-        hostsUsed: 11,
-      },
-      {
-        subnetAddress: '172.16.0.0',
-        firstHostAddress: '172.16.0.1',
-        lastHostAddress: '172.16.0.126',
-        broadcastAddress: '172.16.0.127',
-        subnetMask: '255.255.255.128',
-        subnetMaskBitCount: 25,
-        hosts: Math.pow(2, 7) - 2,
-        hostsUsed: 38,
-      },
-    ];
+    const ip = this.form.get('ip')!.value;
+    const maskStr = this.form.get('mask')!.value;
+    const maskBits = IPv4Validators.maskToBitCount(maskStr)!;
+    const task = this.form.get('task')!.value;
 
-    const resultInfo: ResultInfo = {
-      networkAddress: this.form.get('ip')!.value,
-      networkMask: this.form.get('mask')!.value,
-      hostsCounts:
-        this.form
-          .get('hostCounts')
-          ?.value?.split(',')
-          ?.map((s: any) => +s) ?? [],
-      type: this.form.get('task')!.value,
-      entries,
-    };
+    let request;
+    if (task === 'si') {
+      request = this.ipv4Service.getNetworkInfo(ip, maskBits);
+    } else if (task === 'sp') {
+      const hostsCounts = this.form
+        .get('hostCounts')!
+        .value.split(',')
+        .map((s: string) => +s);
+      request = this.ipv4Service.partitionSubnet(ip, maskBits, hostsCounts);
+    } else {
+      const count = +this.form.get('count')!.value;
+      request = this.ipv4Service.regularPartition(ip, maskBits, count);
+    }
 
-    this.router.navigate(['/results'], { state: { resultInfo } });
-
-    // proceed with valid data
-    console.log(this.form.value);
+    request.subscribe(
+      (result: ResultInfo) =>
+        this.router.navigate(['/results'], { state: { resultInfo: result } }),
+      (err) => (this.serverError = err.error?.message || 'error.server')
+    );
   }
 }

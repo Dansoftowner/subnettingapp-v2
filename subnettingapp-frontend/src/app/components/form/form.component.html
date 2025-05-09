@@ -1,58 +1,142 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
     <table>
+      <!-- IP Field -->
       <tr>
         <td>
-          <label for="ipField">{{ 'form.ipField.label' | translate }}</label>
-          <label class="abbr-label">{{ 'form.ipField.label.abbr' | translate }}</label>
+          <label for="ipField">{{ "form.ipField.label" | translate }}</label>
+          <label class="abbr-label">{{
+            "form.ipField.abbr" | translate
+          }}</label>
         </td>
         <td class="input-td">
-          <div>
-            <input id="ipField" type="text" formControlName="ip"
-                   [class.error]="form.get('ip')!.invalid && (form.get('ip')!.dirty || form.get('ip')!.touched)"
-                   placeholder="{{ 'form.ipField.prompt' | translate }}" />
+          <input
+            id="ipField"
+            type="text"
+            formControlName="ip"
+            [class.error]="
+              form.get('ip')?.invalid &&
+              (form.get('ip')?.dirty || form.get('ip')?.touched)
+            "
+            placeholder="{{ 'form.ipField.prompt' | translate }}"
+          />
+          <div
+            *ngIf="form.get('ip')?.errors?.['ip'] && (form.get('ip')?.dirty || form.get('ip')?.touched)"
+            class="error-msg"
+          >
+            {{ "error.ip" | translate }}
           </div>
         </td>
       </tr>
+      <!-- Mask Field -->
       <tr>
         <td>
-          <label for="maskField">{{ 'form.maskField.label' | translate }}</label>
-          <label class="abbr-label">{{ 'form.maskField.label.abbr' | translate }}</label>
+          <label for="maskField">{{
+            "form.maskField.label" | translate
+          }}</label>
+          <label class="abbr-label">{{
+            "form.maskField.abbr" | translate
+          }}</label>
         </td>
         <td class="input-td">
-          <div>
-            <input id="maskField" type="text" formControlName="mask"
-                   [class.error]="form.get('mask')!.invalid && (form.get('mask')!.dirty || form.get('mask')!.touched)"
-                   placeholder="{{ 'form.maskField.prompt' | translate }}" />
+          <input
+            id="maskField"
+            type="text"
+            formControlName="mask"
+            [class.error]="
+              form.get('mask')?.invalid &&
+              (form.get('mask')?.dirty || form.get('mask')?.touched)
+            "
+            placeholder="{{ 'form.maskField.prompt' | translate }}"
+          />
+          <div
+            *ngIf="form.get('mask')?.errors?.['mask'] && (form.get('mask')?.dirty || form.get('mask')?.touched)"
+            class="error-msg"
+          >
+            {{ "error.mask" | translate }}
           </div>
         </td>
       </tr>
+      <!-- Task Radios -->
       <tr>
-        <td>
-          <input type="radio" id="simpleInfoBox" formControlName="task" value="si" />
-          <label for="simpleInfoBox">{{ 'form.task.basic_subnet_info' | translate }}</label>
-          <label class="abbr-label">{{ 'form.task.basic_subnet_info.abbr' | translate }}</label>
-        </td>
-      </tr>
-      <tr>
-        <td>
-          <input type="radio" id="partitioningBox" formControlName="task" value="sp" />
-          <label for="partitioningBox">{{ 'form.task.partition' | translate }}</label>
-        </td>
-        <td class="input-td">
-          <div>
-            <input id="hostsCount" type="text" formControlName="hostCounts"
-                   [class.error]="form.get('hostCounts')!.invalid && (form.get('hostCounts')!.dirty || form.get('hostCounts')!.touched)"
-                   placeholder="{{ 'form.hostsCount.prompt' | translate }}" />
+        <td colspan="2">
+          <div class="radio-group">
+            <label>
+              <input type="radio" formControlName="task" value="si" />
+              <span>{{ "form.task.si" | translate }}</span>
+            </label>
+            <label>
+              <input type="radio" formControlName="task" value="sp" />
+              <span>{{ "form.task.sp" | translate }}</span>
+            </label>
+            <label>
+              <input type="radio" formControlName="task" value="rp" />
+              <span>{{ "form.task.rp" | translate }}</span>
+            </label>
           </div>
         </td>
       </tr>
-      <tr>
-        <td class="submit-td" colspan="2">
-          <hr />
-          <button type="submit" [disabled]="form.invalid">{{ 'form.submit' | translate }}</button>
+      <!-- Hosts Counts for SP -->
+      <tr *ngIf="form.get('task')?.value === 'sp'">
+        <td>
+          <label for="hostsCount">{{
+            "form.hostsCount.label" | translate
+          }}</label>
+        </td>
+        <td class="input-td">
+          <input
+            id="hostsCount"
+            type="text"
+            formControlName="hostCounts"
+            [class.error]="
+              form.get('hostCounts')?.invalid &&
+              (form.get('hostCounts')?.dirty || form.get('hostCounts')?.touched)
+            "
+            placeholder="{{ 'form.hostsCount.prompt' | translate }}"
+          />
+          <div
+            *ngIf="form.get('hostCounts')?.errors?.['hostsList'] && (form.get('hostCounts')?.dirty || form.get('hostCounts')?.touched)"
+            class="error-msg"
+          >
+            {{ "error.hostsList" | translate }}
+          </div>
+        </td>
+      </tr>
+      <!-- Count for RP -->
+      <tr *ngIf="form.get('task')?.value === 'rp'">
+        <td>
+          <label for="regularCount">{{
+            "form.regularCount.label" | translate
+          }}</label>
+        </td>
+        <td class="input-td">
+          <input
+            id="regularCount"
+            type="text"
+            formControlName="count"
+            [class.error]="(form.errors?.['countNotPowerOfTwo'] || form.errors?.['countExceedsMax']) && (form.get('count')?.dirty || form.get('count')?.touched)"
+            placeholder="{{ 'form.regularCount.prompt' | translate }}"
+          />
         </td>
       </tr>
     </table>
+
+    <!-- Form level errors -->
+    <div *ngIf="form.errors && (form.dirty || form.touched)" class="error-box">
+      <p *ngIf="form.errors['hostsCapacity']">
+        {{ "error.hostsCapacity" | translate }}
+      </p>
+      <p *ngIf="form.errors['countNotPowerOfTwo']">
+        {{ "error.countNotPowerOfTwo" | translate }}
+      </p>
+      <p *ngIf="form.errors['countExceedsMax']">
+        {{ "error.countExceedsMax" | translate }}
+      </p>
+      <p *ngIf="serverError">{{ serverError | translate }}</p>
+    </div>
+
+    <button type="submit" [disabled]="form.invalid">
+      {{ "form.submit" | translate }}
+    </button>
   </form>
 </div>
