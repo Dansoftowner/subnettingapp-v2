@@ -10,6 +10,7 @@ import {
 import { IPv4Validators } from './ipv4-validators';
 import { Router } from '@angular/router';
 import { ResultInfo } from '../../models/ResultInfo.model';
+import { SubnetEntry } from '../../models/SubnetEntry.model';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Ipv4TaskService } from 'src/app/services/ipv4-task.service';
 
@@ -34,7 +35,7 @@ export class FormComponent implements OnInit {
         mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
         task: ['si', Validators.required],
         hostCounts: [''],
-        count: [''],
+        count: ['', [Validators.pattern(/^[0-9]+$/)]],
       },
       { validators: this.formLevelValidator() }
     );
@@ -52,7 +53,10 @@ export class FormComponent implements OnInit {
         count.disable();
         count.reset();
       } else if (value === 'rp') {
-        count.setValidators([Validators.required]);
+        count.setValidators([
+          Validators.required,
+          Validators.pattern(/^[0-9]+$/),
+        ]);
         count.enable();
         hosts.clearValidators();
         hosts.disable();
@@ -126,8 +130,12 @@ export class FormComponent implements OnInit {
       }
 
       if (task === 'rp') {
-        const countVal = +group.get('count')!.value;
-        if (countVal > 0) {
+        const val = group.get('count')!.value;
+        if (group.get('count')!.errors?.['pattern']) {
+          return { countNumeric: true };
+        }
+        const countVal = +val;
+        if (!isNaN(countVal) && countVal > 0) {
           const maxCount = Math.pow(2, hostBits - 1);
           if ((countVal & (countVal - 1)) !== 0) {
             return { countNotPowerOfTwo: true };

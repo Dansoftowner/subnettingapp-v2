@@ -114,9 +114,21 @@
             id="regularCount"
             type="text"
             formControlName="count"
-            [class.error]="(form.errors?.['countNotPowerOfTwo'] || form.errors?.['countExceedsMax']) && (form.get('count')?.dirty || form.get('count')?.touched)"
+            [class.error]="(
+              (form.get('count')?.errors?.['required']
+              || form.get('count')?.errors?.['pattern']
+              || form.errors?.['countNotPowerOfTwo']
+              || form.errors?.['countExceedsMax'])
+              && (form.get('count')?.dirty || form.get('count')?.touched)
+            )"
             placeholder="{{ 'form.regularCount.prompt' | translate }}"
           />
+          <div
+            *ngIf="form.get('count')?.errors?.['pattern'] && (form.get('count')?.dirty || form.get('count')?.touched)"
+            class="error-msg"
+          >
+            {{ "error.countNumeric" | translate }}
+          </div>
         </td>
       </tr>
     </table>

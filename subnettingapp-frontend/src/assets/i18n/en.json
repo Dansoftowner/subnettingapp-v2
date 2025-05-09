@@ -25,6 +25,7 @@
     "error.hostsCapacity": "Total required addresses exceed network capacity",
     "error.countNotPowerOfTwo": "Count must be a power of two",
     "error.countExceedsMax": "Count exceeds maximum possible subnets",
+    "error.countNumeric": "Only numeric values are allowed",
     "error.server": "Server error occurred",
     "results.countLabel": "Count of subnets:",
     "results.entry.subnet_address": "Subnet address:",
