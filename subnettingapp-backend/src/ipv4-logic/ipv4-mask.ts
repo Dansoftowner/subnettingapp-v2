@@ -1,9 +1,12 @@
+import { ApiError } from '../error/api-error';
+
 export class IPv4Mask {
   readonly bitCount: number;
 
   constructor(bitCount: number) {
     if (bitCount < 1 || bitCount >= 32) {
-      throw new Error(
+      throw new ApiError(
+        400,
         `Invalid mask length: /${bitCount}. Must be between 1 and 31.`,
       );
     }

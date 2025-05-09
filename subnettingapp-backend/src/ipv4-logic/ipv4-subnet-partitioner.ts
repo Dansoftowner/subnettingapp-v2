@@ -1,3 +1,4 @@
+import { ApiError } from '../error/api-error';
 import { IPv4Address } from './ipv4-address';
 import { IPv4Mask } from './ipv4-mask';
 import { IPv4Subnet } from './ipv4-subnet';
@@ -22,7 +23,8 @@ export class IPv4SubnetPartitioner {
       .map((c) => IPv4SubnetPartitioner.blockSizeFor(c))
       .reduce((sum, sz) => sum + sz, 0);
     if (requiredTotal > totalCapacity) {
-      throw new Error(
+      throw new ApiError(
+        400,
         `Insufficient capacity: required ${requiredTotal} addresses, but only ${totalCapacity} available in ${base.toString()}.`,
       );
     }

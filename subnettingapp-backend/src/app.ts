@@ -4,6 +4,7 @@ import mongoose from 'mongoose';
 import morgan from 'morgan';
 import cors, { CorsOptions } from 'cors';
 import authRoutes from './routes/auth.routes';
+import ipv4TasksRoutes from './routes/ipv4-tasks.routes';
 import config from 'config';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger } from './logger';
@@ -22,6 +23,7 @@ if (process.env.NODE_ENV != 'test') app.use(morgan('combined'));
 
 app.use(express.json());
 app.use('/api', authRoutes);
+app.use('/api', ipv4TasksRoutes);
 
 app.use(errorMiddleware);
 

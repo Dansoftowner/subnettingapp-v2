@@ -1,3 +1,4 @@
+import { ApiError } from '../error/api-error';
 import { IPv4Mask } from './ipv4-mask';
 import { IPV4_ADDRESS_REGEX } from './patterns';
 
@@ -16,11 +17,11 @@ export class IPv4Address {
   static parse(input: string): IPv4Address {
     let [ipPart, cidrPart] = input.split('/');
     if (!IPV4_ADDRESS_REGEX.test(ipPart)) {
-      throw new Error(`Invalid IPv4 address: ${ipPart}`);
+      throw new ApiError(400, `Invalid IPv4 address: ${ipPart}`);
     }
     const octets = ipPart.split('.').map((o) => Number(o));
     if (octets.some((o) => o < 0 || o > 255)) {
-      throw new Error(`IPv4 octet out of range in: ${ipPart}`);
+      throw new ApiError(400, `IPv4 octet out of range in: ${ipPart}`);
     }
     const intValue = octets.reduce((acc, o) => (acc << 8) | o, 0) >>> 0;
 

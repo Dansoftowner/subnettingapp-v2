@@ -1,3 +1,4 @@
+import { ApiError } from '../error/api-error';
 import { IPv4Address } from './ipv4-address';
 import { IPv4Mask } from './ipv4-mask';
 import { IPv4Subnet } from './ipv4-subnet';
@@ -13,7 +14,8 @@ export class IPv4EqualSubnetSplitter {
 
   constructor(base: IPv4Address, count: number) {
     if (count <= 0 || (count & (count - 1)) !== 0) {
-      throw new Error(
+      throw new ApiError(
+        400,
         `Invalid subnet count: ${count}. Count must be a power of two.`,
       );
     }
@@ -21,7 +23,8 @@ export class IPv4EqualSubnetSplitter {
     const hostBits = 32 - this.baseMask.bitCount;
     const maxCount = 1 << (hostBits - 1);
     if (count > maxCount) {
-      throw new Error(
+      throw new ApiError(
+        400,
         `Cannot split ${base.toString()} into ${count} subnets: maximum is ${maxCount}.`,
       );
     }
