@@ -18,20 +18,32 @@ export class IPv4Validators {
   static ipv4Mask(control: AbstractControl): ValidationErrors | null {
     const v: string = control.value;
 
-    // validate mask formatted in 'x.x.x.x'
-    if (IPv4Validators.ipRegex.test(v)) {
-      const parts = v.split('.').map((n) => +n);
-      for (let i = 1; i < parts.length; i++) {
-        // the mask should be continous
-        if (parts[i] > parts[i - 1]) return { mask: true };
-      }
-      return null;
-    }
-
     // validate mask formatted in '/x'
     if (IPv4Validators.cdirRegex.test(v)) {
       const num = +v.slice(1);
       return num > 0 && num < 33 ? null : { mask: true };
+    }
+
+    // validate mask formatted in 'x.x.x.x'
+    if (IPv4Validators.ipRegex.test(v)) {
+      const parts = v.split('.').map((n) => +n);
+      // each octet 0-255 and non-increasing
+      for (let i = 0; i < parts.length; i++) {
+        if (parts[i] < 0 || parts[i] > 255) return { mask: true };
+        if (i > 0 && parts[i] > parts[i - 1]) return { mask: true };
+      }
+
+      // mask must be continous in bits!
+      const maskInt =
+        ((parts[0] << 24) >>> 0) |
+        ((parts[1] << 16) >>> 0) |
+        ((parts[2] << 8) >>> 0) |
+        (parts[3] >>> 0);
+      const inv = ~maskInt >>> 0;
+
+      // valid mask => inv+1 is power of two
+      if ((inv & (inv + 1)) !== 0) return { mask: true };
+      return null;
     }
 
     return { mask: true };
