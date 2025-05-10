@@ -13,7 +13,9 @@
             "results.entry.subnet_address.abbr" | translate
           }}</label>
         </td>
-        <td class="value">{{ entry.subnetAddress }}</td>
+        <td class="value">
+          {{ entry.subnetAddress }} /{{ entry.subnetMaskBitCount }}
+        </td>
       </tr>
       <tr>
         <td class="label">
@@ -71,7 +73,7 @@
           >{{ entry.hostsUsed }} / {{ entry.hosts }}
           {{ "results.entry.progress.used" | translate }}.</span
         >
-        <span class="hosts-remaining"
+        <span class="hosts-remaining" *ngIf="entry.hosts > entry.hostsUsed"
           >{{ entry.hosts - entry.hostsUsed }}
           {{ "results.entry.progress.remains" | translate }}</span
         >
