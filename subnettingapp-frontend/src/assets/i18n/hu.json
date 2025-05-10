@@ -1,4 +1,6 @@
 {
+    "form.header": "Számolás",
+    "form.title.prompt": "Cím, pl.: \"B terem hálózata\"",
     "form.ipField.label": "IP cím:",
     "form.ipField.label.abbr": "IP:",
     "form.ipField.prompt": "pl.: 127.0.0.1",

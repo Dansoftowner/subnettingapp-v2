@@ -31,6 +31,7 @@ export class FormComponent implements OnInit {
   ) {
     this.form = this.fb.group(
       {
+        title: [''],
         ip: ['', [Validators.required, IPv4Validators.ipv4Address]],
         mask: ['', [Validators.required, IPv4Validators.ipv4Mask]],
         task: ['si', Validators.required],

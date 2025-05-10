@@ -1,4 +1,6 @@
 {
+    "form.header": "Calculate",
+    "form.title.prompt": "Title, e.g \"calculation for room B\"",
     "form.ipField.label": "IP address:",
     "form.ipField.label.abbr": "IP:",
     "form.ipField.prompt": "e.g.: 127.0.0.1",

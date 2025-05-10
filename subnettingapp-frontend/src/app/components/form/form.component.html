@@ -1,5 +1,15 @@
 <div class="container">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <h2>{{ 'form.header' | translate }}</h2>
+    <div class="title-container">
+      <input
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="{{ 'form.title.prompt' | translate }}"
+      />
+    </div>
+
     <table>
       <!-- IP Field -->
       <tr>
