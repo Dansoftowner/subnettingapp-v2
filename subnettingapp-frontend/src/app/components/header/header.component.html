@@ -1,7 +1,7 @@
 <div class="header">
   <a routerLink="/">SubnettingApp</a>
   <div class="header-actions" *ngIf="user">
-    <span class="username">{{ user.fullName }}</span>
+    <span class="username"><i class="material-icons">person</i>{{ user.fullName }}</span>
     <button (click)="logout()">
       <i class="material-icons">exit_to_app</i>{{ "header.logout" | translate }}
     </button>
