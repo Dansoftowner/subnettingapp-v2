@@ -70,6 +70,86 @@
       <span class="decimal">{{ entries[0].broadcastAddress }}</span>
     </pre>
     </div>
+
+    <div
+      *ngIf="showExplanation && resultInfo.type === 'sp'"
+      class="explanation-content"
+    >
+      <p><strong>Kiinduló hálózati cím:</strong></p>
+      <pre class="binary-line">
+        <ng-container *ngFor="let octet of networkBinary; let oi = index">
+         <span *ngFor="let bit of octet; let bi = index"
+               [ngClass]="{ 'covered-bit': oi * 8 + bi < maskBitCount }">
+           {{ bit }}
+         </span>
+         <span *ngIf="oi < networkBinary.length - 1" class="octet-separator">.</span>
+        </ng-container>
+        <i class="material-icons arrow-icon">arrow_forward</i>
+        <span class="decimal">{{ resultInfo.networkAddress }}/{{ maskBitCount }}</span>
+        </pre>
+
+      <div *ngFor="let subnet of spSubnets; let idx = index" class="sp-section">
+        <p>
+          <strong>Alhálózat #{{ idx + 1 }}:</strong> {{ subnet.hosts }} állomás
+        </p>
+        <p>
+          felső_egészrész(log<sub>2</sub>({{ subnet.hosts }} + 2)) =
+          {{ subnet.bitsNeeded }} bit hoszt-bit szükséges → maszk: 32 -
+          {{ subnet.bitsNeeded }} → /{{ subnet.subnetMaskBitCount }}
+        </p>
+
+        <pre class="binary-line">
+      <ng-container *ngFor="let octet of subnet.binary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'covered-bit': oi * 8 + bi < subnet.subnetMaskBitCount }">
+          {{ bit }}
+        </span>
+        <span *ngIf="oi < subnet.binary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ subnet.networkAddress }}/{{ subnet.subnetMaskBitCount }}</span>
+    </pre>
+
+        <!-- First host -->
+        <pre class="binary-line">
+      <ng-container *ngFor="let octet of subnet.binary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': oi * 8 + bi === 31 }">
+          {{ (oi * 8 + bi === 31) ? '1' : bit }}
+        </span>
+        <span *ngIf="oi < subnet.binary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ resultInfo.entries[idx].firstHostAddress }}</span>
+    </pre>
+
+        <!-- Last host -->
+        <pre class="binary-line">
+      <ng-container *ngFor="let octet of subnet.binary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': oi * 8 + bi >= subnet.subnetMaskBitCount && oi * 8 + bi < subnet.subnetMaskBitCount + subnet.bitsNeeded - 1 }">
+          {{ (oi * 8 + bi >= subnet.subnetMaskBitCount && oi * 8 + bi < subnet.subnetMaskBitCount + subnet.bitsNeeded - 1) ? '1' : bit }}
+        </span>
+        <span *ngIf="oi < subnet.binary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ resultInfo.entries[idx].lastHostAddress }}</span>
+    </pre>
+
+        <!-- Broadcast  -->
+        <pre class="binary-line">
+      <ng-container *ngFor="let octet of subnet.binary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': oi * 8 + bi >= subnet.subnetMaskBitCount }">
+          {{ (oi * 8 + bi >= subnet.subnetMaskBitCount) ? '1' : bit }}
+        </span>
+        <span *ngIf="oi < subnet.binary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ resultInfo.entries[idx].broadcastAddress }}</span>
+    </pre>
+      </div>
+    </div>
   </div>
 
   <p *ngIf="resultInfo.type != 'si'" class="count-label">

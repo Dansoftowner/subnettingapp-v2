@@ -21,6 +21,14 @@ export class ResultsComponent implements OnInit {
   lastHostBinary: string[][] = [];
   broadcastBinary: string[][] = [];
 
+  spSubnets: Array<{
+    networkAddress: string;
+    hosts: number;
+    bitsNeeded: number;
+    subnetMaskBitCount: number;
+    binary: string[][];
+  }> = [];
+
   constructor(private router: Router) {
     this.resultInfo =
       (this.router.getCurrentNavigation()?.extras?.state as any)?.resultInfo ||
@@ -42,6 +50,31 @@ export class ResultsComponent implements OnInit {
       this.lastHostBinary = this.ipToBinaryOctets(entry.lastHostAddress);
       this.broadcastBinary = this.ipToBinaryOctets(entry.broadcastAddress);
     }
+
+    if (this.resultInfo.type === TaskType.SubnetPartitioning) {
+      const baseAddr = this.resultInfo.networkAddress;
+      let currentAddrNum = this.ipToNumber(baseAddr);
+      this.spSubnets = this.resultInfo.hostsCounts
+        .slice()
+        .sort((a, b) => b - a)
+        .map((hosts) => {
+          const bitsNeeded = Math.ceil(Math.log2(hosts + 2));
+          const subnetMaskBitCount = 32 - bitsNeeded;
+          const networkAddress = this.numberToIp(currentAddrNum);
+          const binary = this.ipToBinaryOctets(networkAddress);
+          currentAddrNum += Math.pow(2, bitsNeeded);
+          return {
+            networkAddress,
+            hosts,
+            bitsNeeded,
+            subnetMaskBitCount,
+            binary,
+          };
+        });
+      this.maskBitCount = this.ipToBinaryOctets(this.resultInfo.networkMask)
+        .flat()
+        .filter((bit) => bit === '1').length;
+    }
   }
 
   ngOnInit(): void {}
@@ -54,6 +87,19 @@ export class ResultsComponent implements OnInit {
     return ip
       .split('.')
       .map((oct) => parseInt(oct, 10).toString(2).padStart(8, '0').split(''));
+  }
+
+  private ipToNumber(ip: string): number {
+    return ip.split('.').reduce((acc, oct) => (acc << 8) + +oct, 0) >>> 0;
+  }
+
+  private numberToIp(num: number): string {
+    return [
+      (num >>> 24) & 0xff,
+      (num >>> 16) & 0xff,
+      (num >>> 8) & 0xff,
+      num & 0xff,
+    ].join('.');
   }
 
   pow(base: number, exponent: number): number {
