@@ -1,8 +1,10 @@
+import { TaskType } from "./TaskType.model";
+
 export interface HistoryItem {
   _id?: string;
   userId?: string;
   title?: string;
-  type?: 'si' | 'sp' | 'rp';
+  type?: TaskType;
   networkAddress?: string;
   networkMask?: number;
   hostsCounts?: number[];
