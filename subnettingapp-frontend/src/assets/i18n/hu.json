@@ -1,5 +1,8 @@
 {
+    "dashboard.new_calculation": "Új számolás",
+    "dashboard.loading": "Betöltés...",
     "form.header": "Számolás",
+    "dashboard.server_error": "Szerver hiba történt",
     "form.title.prompt": "Cím, pl.: \"B terem hálózata\"",
     "form.ipField.label": "IP cím:",
     "form.ipField.label.abbr": "IP:",

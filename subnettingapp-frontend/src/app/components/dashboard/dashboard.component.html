@@ -1,0 +1,22 @@
+<div class="container dashboard">
+  <button class="new-btn" (click)="newCalculation()">
+    {{ "dashboard.new_calculation" | translate }}
+  </button>
+
+  <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+
+  <div #historyList class="history-list">
+    <div
+      *ngFor="let item of items"
+      class="history-card entry"
+      (click)="openItem(item)"
+    >
+      <h4>{{ item.title || "––" }}</h4>
+      <p>{{ item.networkAddress }} / {{ item.networkMask }}</p>
+      <small>{{ item.createdAt | date : "short" }}</small>
+    </div>
+    <div *ngIf="loading" class="loading">
+      {{ "dashboard.loading" | translate }}
+    </div>
+  </div>
+</div>

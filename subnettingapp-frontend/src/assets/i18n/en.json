@@ -1,4 +1,7 @@
 {
+    "dashboard.new_calculation": "New calculation",
+    "dashboard.loading": "Loading...",
+    "dashboard.server_error": "Server error occurred",
     "form.header": "Calculate",
     "form.title.prompt": "Title, e.g \"calculation for room B\"",
     "form.ipField.label": "IP address:",

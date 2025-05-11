@@ -8,6 +8,7 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { authGuard } from './guards/auth.guard';
 import { unauthGuard } from './guards/unauth.guard';
 import { PasswordRestorationComponent } from './components/password-restoration/password-restoration.component';
+import { DashboardComponent } from './components/dashboard/dashboard.component';
 
 const routes: Routes = [
   { path: 'form', component: FormComponent, canActivate: [authGuard] },
@@ -25,16 +26,13 @@ const routes: Routes = [
     path: 'forgotten-password/:userId/:passwordtoken',
     component: PasswordRestorationComponent,
   },
-
-  { path: '', redirectTo: '/form', pathMatch: 'full' },
-  { path: '**', redirectTo: '/form' },
-
-  /* 
-  TODO: dashboard component
-  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [authGuard],
+  },
   { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
-  { path: '**', redirectTo: '/dashboard' }
-    */
+  { path: '**', redirectTo: '/dashboard' },
 ];
 
 @NgModule({
