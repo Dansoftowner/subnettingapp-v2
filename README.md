@@ -35,6 +35,7 @@ Egyaránt a frontend, egyaránt a backend ebben az egy repository-ban van tárol
 
 #### Fontos környezeti változók
 
+- `PORT`: az a portszám, amin a webszervert futtatni akarjuk, ha ez nincs megadva, akkor alapértelmezésben az alkalmazás az `5000`-es TCP portot fogja használni
 - `SUBNETTINGAPP_MONGO_URI`: MongoDB connection-string
 - `SUBNETTINGAPP_JWT_KEY`: a [JWT](https://jwt.io/) tokenek digitális aláírásához (signature) használt titkos-kulcs
 - `SUBNETTINGAPP_FRONTEND_HOST`: a backend-nek szüksége van a frontend-szerver URL-jére (email-ek tartalmában)
@@ -114,3 +115,15 @@ A backend-en az API végpontokra automatizált tesztek vannak írva. Ezeket az `
 cd subnettingapp-backend
 npm run test
 ```
+
+> A tesztelés a [Jest](https://jestjs.io/) keretrendszer segítségével történik.
+
+## Email küldések kipróbálása (MailTrap)
+
+Az alkalmazás rendelkezik jelszó-helyreállítási funkcióval. Ebben a folyamatban kulcsfontosságú szereppel bír az email-ek küldése.
+
+Értelemszerűen, ha ezt ki akarjuk próbálni _development_ környezetben, nem szeretnénk azt, hogy az email-ek tényleg kézbesítésre kerüljenek.
+Erre nyújt tökéletes megoldást a [MailTrap](https://mailtrap.io/), ami lehetővé teszi, hogy az alkalmazás egy _fake/dummy_ SMTP szerverre küldje az üzeneteket, ami "elkapja" őket, annélkül hogy kézbesítené. A fejlesztők pedig meg tudják tekinteni ezeket a leveleket egy felhasználóbarát környezetben.
+
+A megfelelő [környezeti változók](#fontos-környezeti-változók) beállításával a webszerver SMTP üzeneteit egyszerűem a MailTrap email-testing platformjára küldhetjük.
+
