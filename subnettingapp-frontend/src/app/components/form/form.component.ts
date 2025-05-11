@@ -24,6 +24,7 @@ import { HistoryService } from 'src/app/services/history.service';
 import { HistoryItem } from 'src/app/models/history-item.model';
 import { ResultInfo } from 'src/app/models/ResultInfo.model';
 import { TranslateService } from '@ngx-translate/core';
+import { TaskType } from 'src/app/models/TaskType.model';
 
 @Component({
   selector: 'app-form',
@@ -125,19 +126,26 @@ export class FormComponent implements OnInit {
     const nav = this.router.getCurrentNavigation();
     const state = nav?.extras.state as { historyItem?: HistoryItem };
     if (state?.historyItem) {
-      const hi = state.historyItem;
-      this.historyItemId = hi._id;
-      this.form.patchValue(
-        {
-          title: hi.title,
-          ip: hi.networkAddress,
-          mask: hi.networkMask ? `/${hi.networkMask}` : '',
-          task: hi.type,
-          hostCounts: hi.hostsCounts?.join(',') || '',
-          count: hi.count,
+      this.historyItemId = state.historyItem._id;
+      this.historyService.getHistoryItemById(state.historyItem._id!).subscribe({
+        next: (hi) => {
+          this.form.patchValue(
+            {
+              title: hi.title,
+              ip: hi.networkAddress,
+              mask: hi.networkMask ? `/${hi.networkMask}` : '',
+              task: hi.type,
+              hostCounts: hi.hostsCounts?.join(',') || '',
+              count: hi.count,
+            },
+            { emitEvent: false }
+          );
         },
-        { emitEvent: false }
-      );
+        error: (err) => {
+          this.serverError =
+            err.error?.message || this.translate.instant('error.server');
+        },
+      });
     }
 
     // Auto-save on field changes (debounced)
@@ -146,7 +154,6 @@ export class FormComponent implements OnInit {
       this.form
         .get('title')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           filter(() => this.form.get('title')!.valid),
@@ -155,7 +162,9 @@ export class FormComponent implements OnInit {
               .patchHistoryItem(this.historyItemId!, { title: val })
               .pipe(
                 catchError((err) => {
-                  this.serverError = err.error?.message || 'Server error';
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
                   return of(null);
                 })
               )
@@ -167,7 +176,6 @@ export class FormComponent implements OnInit {
       this.form
         .get('ip')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           filter(() => this.form.get('ip')!.valid),
@@ -176,7 +184,9 @@ export class FormComponent implements OnInit {
               .patchHistoryItem(this.historyItemId!, { networkAddress: val })
               .pipe(
                 catchError((err) => {
-                  this.serverError = err.error?.message || 'Server error';
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
                   return of(null);
                 })
               )
@@ -188,7 +198,6 @@ export class FormComponent implements OnInit {
       this.form
         .get('mask')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           filter(() => this.form.get('mask')!.valid),
@@ -198,7 +207,9 @@ export class FormComponent implements OnInit {
               .patchHistoryItem(this.historyItemId!, { networkMask: bits })
               .pipe(
                 catchError((err) => {
-                  this.serverError = err.error?.message || 'Server error';
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
                   return of(null);
                 })
               );
@@ -210,7 +221,6 @@ export class FormComponent implements OnInit {
       this.form
         .get('task')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           switchMap((val) =>
@@ -218,7 +228,9 @@ export class FormComponent implements OnInit {
               .patchHistoryItem(this.historyItemId!, { type: val })
               .pipe(
                 catchError((err) => {
-                  this.serverError = err.error?.message || 'Server error';
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
                   return of(null);
                 })
               )
@@ -230,14 +242,16 @@ export class FormComponent implements OnInit {
       this.form
         .get('hostCounts')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           filter(() => this.form.get('hostCounts')!.valid),
           switchMap((val) => {
             const arr = val.split(',').map((s: string) => +s.trim());
             return this.historyService
-              .patchHistoryItem(this.historyItemId!, { hostsCounts: arr })
+              .patchHistoryItem(this.historyItemId!, {
+                type: TaskType.SubnetPartitioning,
+                hostsCounts: arr,
+              })
               .pipe(
                 catchError((err) => {
                   this.serverError =
@@ -254,13 +268,15 @@ export class FormComponent implements OnInit {
       this.form
         .get('count')!
         .valueChanges.pipe(
-          skip(1),
           debounceTime(500),
           distinctUntilChanged(),
           filter(() => this.form.get('count')!.valid && this.form.valid),
           switchMap((val) =>
             this.historyService
-              .patchHistoryItem(this.historyItemId!, { count: +val })
+              .patchHistoryItem(this.historyItemId!, {
+                type: TaskType.RegularPartitioning,
+                count: +val,
+              })
               .pipe(
                 catchError((err) => {
                   this.serverError =
