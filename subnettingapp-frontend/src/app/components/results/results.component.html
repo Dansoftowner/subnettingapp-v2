@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="explanation-section">
+  <div *ngIf="resultInfo.type !== 'rp'" class="explanation-section">
     <button class="expander" (click)="toggleExplanation()">
       {{
         showExplanation ? "Magyarázat elrejtése" : "Magyarázat megjelenítése"
@@ -10,7 +10,7 @@
       *ngIf="showExplanation && resultInfo.type === 'si'"
       class="explanation-content"
     >
-      <p><strong>Hálózati cím binárisan:</strong></p>
+      <p><strong>Hálózati cím:</strong></p>
       <pre class="binary-line">
       <ng-container *ngFor="let octet of networkBinary; let oi = index">
         <span *ngFor="let bit of octet; let bi = index"
