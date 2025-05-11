@@ -17,10 +17,10 @@ A _SubnettingApp_ egy IPv4-hálózatok felbontására és tervezésére szolgál
 
 ## Forráskód
 
-Egyaránt a frontend, egyaránt a backend ebben az egy repository-ban van tárolva, két alkönyvtárban
+A _backend_ és a _frontend_ alkalmazás is ebben az egy repository-ban van tárolva, két alkönyvtárban:
 
-- [subnettingapp-backend](/subnettingapp-backend/)
-- [subnettingapp-frontend](/subnettingapp-frontend/)
+- [`subnettingapp-backend`](/subnettingapp-backend/)
+- [`subnettingapp-frontend`](/subnettingapp-frontend/)
 
 ## Főbb technológiák
 
@@ -126,4 +126,28 @@ Az alkalmazás rendelkezik jelszó-helyreállítási funkcióval. Ebben a folyam
 Erre nyújt tökéletes megoldást a [MailTrap](https://mailtrap.io/), ami lehetővé teszi, hogy az alkalmazás egy _fake/dummy_ SMTP szerverre küldje az üzeneteket, ami "elkapja" őket, annélkül hogy kézbesítené. A fejlesztők pedig meg tudják tekinteni ezeket a leveleket egy felhasználóbarát környezetben.
 
 A megfelelő [környezeti változók](#fontos-környezeti-változók) beállításával a webszerver SMTP üzeneteit egyszerűem a MailTrap email-testing platformjára küldhetjük.
+
+## Adattárolás
+
+A `SubnettingApp`-nak szükége van felhasználói adatok tárolására, adatbázisra.
+Az ilyen általános, egyszerű igényű projektek számára, mint amilyen ez is, a [MongoDB](https://www.mongodb.com/) egy tökéletes választás.
+
+Előnyei közé tartozik az, hogy nagyon gördülékenyen és egyszerűen integrálható Node.js alkalmazásokkal. Ráadásul a [MongoDB Atlas](https://www.mongodb.com/products/platform/atlas-database) ingyenesen biztosít MongoDB adattárolást a felhőben, ami tesztelésre is kiválóan alkalmas, így lokálisan nem is van feltétlenül szükség letölteni.  
+Ha mégis lokálisan akarunk MongoDB adatbázis-szervert futtatni, a *MongoDB Community Server*t [innen lehet letölteni](https://www.mongodb.com/try/download/community).
+
+Az alkalmazásnak szüksége van a csatlakozási sztring-re (connection-string), amit a `SUBNETTINGAPP_MONGO_URI` környezeti változóval tudunk beállítani.
+
+### Kollekciók
+
+- `users`: felhasználók adataihoz
+- `passwordtokens`: a jelszó-helyreállítási folyamatban használt *token*ek tárolásához
+- `historyitems`: a felhasználó előzményeinek mentéséhez
+
+### Biztonsági megfontolások
+
+Alapvető fontosságú az, hogy a jelszavak, illetve egyéb érzékeny (_sensitive_) token-ek titkosítva legyenek eltárolva az adatbázisban.
+
+Ezért mind a jelszavak, mind a *password token*ek a [Bcrypt](https://www.npmjs.com/package/bcrypt) titkosítási algoritmussal *hash*elésre kerülnek.
+
+A _password tokenek_ pedig - amelyek az elfelejtett jelszavak helyreállítási folyamatban játszanak kulcsszerepet - egy [TTL index](https://www.mongodb.com/docs/manual/core/index-ttl/) segítségével 1 óra után automatikusan törlésre kerülnek a létrehozás után.
 
