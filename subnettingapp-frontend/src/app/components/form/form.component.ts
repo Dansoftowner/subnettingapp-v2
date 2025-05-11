@@ -1,18 +1,29 @@
 import { Component, OnInit } from '@angular/core';
 import {
+  AbstractControl,
   FormBuilder,
   FormGroup,
-  Validators,
-  AbstractControl,
   ValidationErrors,
   ValidatorFn,
+  Validators,
 } from '@angular/forms';
+import { Router, NavigationExtras } from '@angular/router';
+import { of } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  skip,
+  switchMap,
+  catchError,
+} from 'rxjs/operators';
 import { IPv4Validators } from './ipv4-validators';
-import { Router } from '@angular/router';
-import { ResultInfo } from '../../models/ResultInfo.model';
-import { SubnetEntry } from '../../models/SubnetEntry.model';
 import { SettingsService } from 'src/app/services/settings.service';
 import { Ipv4TaskService } from 'src/app/services/ipv4-task.service';
+import { HistoryService } from 'src/app/services/history.service';
+import { HistoryItem } from 'src/app/models/history-item.model';
+import { ResultInfo } from 'src/app/models/ResultInfo.model';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-form',
@@ -22,12 +33,15 @@ import { Ipv4TaskService } from 'src/app/services/ipv4-task.service';
 export class FormComponent implements OnInit {
   form: FormGroup;
   serverError: string | null = null;
+  private historyItemId?: string;
 
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private translate: TranslateService,
     private settingsService: SettingsService,
-    private ipv4Service: Ipv4TaskService
+    private ipv4Service: Ipv4TaskService,
+    private historyService: HistoryService
   ) {
     this.form = this.fb.group(
       {
@@ -40,6 +54,8 @@ export class FormComponent implements OnInit {
       },
       { validators: this.formLevelValidator() }
     );
+
+    this.initAutoSaveMechanism();
   }
 
   ngOnInit(): void {
@@ -90,6 +106,160 @@ export class FormComponent implements OnInit {
     // initialize hostsCount and count disabled
     this.form.get('hostCounts')!.disable();
     this.form.get('count')!.disable();
+  }
+
+  private initAutoSaveMechanism() {
+    const nav = this.router.getCurrentNavigation();
+    const state = nav?.extras.state as { historyItem?: HistoryItem };
+    if (state?.historyItem) {
+      const hi = state.historyItem;
+      this.historyItemId = hi._id;
+      this.form.patchValue(
+        {
+          title: hi.title,
+          ip: hi.networkAddress,
+          mask: hi.networkMask ? `/${hi.networkMask}` : '',
+          task: hi.type,
+          hostCounts: hi.hostsCounts?.join(',') || '',
+          count: hi.count,
+        },
+        { emitEvent: false }
+      );
+    }
+
+    // Auto-save on field changes (debounced)
+    if (this.historyItemId) {
+      // Title
+      this.form
+        .get('title')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          filter(() => this.form.get('title')!.valid),
+          switchMap((val) =>
+            this.historyService
+              .patchHistoryItem(this.historyItemId!, { title: val })
+              .pipe(
+                catchError((err) => {
+                  this.serverError = err.error?.message || 'Server error';
+                  return of(null);
+                })
+              )
+          )
+        )
+        .subscribe();
+
+      // IP Address
+      this.form
+        .get('ip')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          filter(() => this.form.get('ip')!.valid),
+          switchMap((val) =>
+            this.historyService
+              .patchHistoryItem(this.historyItemId!, { networkAddress: val })
+              .pipe(
+                catchError((err) => {
+                  this.serverError = err.error?.message || 'Server error';
+                  return of(null);
+                })
+              )
+          )
+        )
+        .subscribe();
+
+      // Mask
+      this.form
+        .get('mask')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          filter(() => this.form.get('mask')!.valid),
+          switchMap((val) => {
+            const bits = IPv4Validators.maskToBitCount(val) || 0;
+            return this.historyService
+              .patchHistoryItem(this.historyItemId!, { networkMask: bits })
+              .pipe(
+                catchError((err) => {
+                  this.serverError = err.error?.message || 'Server error';
+                  return of(null);
+                })
+              );
+          })
+        )
+        .subscribe();
+
+      // Task
+      this.form
+        .get('task')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          switchMap((val) =>
+            this.historyService
+              .patchHistoryItem(this.historyItemId!, { type: val })
+              .pipe(
+                catchError((err) => {
+                  this.serverError = err.error?.message || 'Server error';
+                  return of(null);
+                })
+              )
+          )
+        )
+        .subscribe();
+
+      // Hosts Counts
+      this.form
+        .get('hostCounts')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          filter(() => this.form.get('hostCounts')!.valid),
+          switchMap((val) => {
+            const arr = val.split(',').map((s: string) => +s.trim());
+            return this.historyService
+              .patchHistoryItem(this.historyItemId!, { hostsCounts: arr })
+              .pipe(
+                catchError((err) => {
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
+                  return of(null);
+                })
+              );
+          })
+        )
+        .subscribe();
+
+      // Count
+      this.form
+        .get('count')!
+        .valueChanges.pipe(
+          skip(1),
+          debounceTime(500),
+          distinctUntilChanged(),
+          filter(() => this.form.get('count')!.valid && this.form.valid),
+          switchMap((val) =>
+            this.historyService
+              .patchHistoryItem(this.historyItemId!, { count: +val })
+              .pipe(
+                catchError((err) => {
+                  this.serverError =
+                    err.error?.message ||
+                    this.translate.instant('error.server');
+                  return of(null);
+                })
+              )
+          )
+        )
+        .subscribe();
+    }
   }
 
   get spMaxCapacity(): number {
@@ -191,10 +361,10 @@ export class FormComponent implements OnInit {
       request = this.ipv4Service.regularPartition(ip, maskBits, count);
     }
 
-    request.subscribe(
-      (result: ResultInfo) =>
+    request.subscribe({
+      next: (result: ResultInfo) =>
         this.router.navigate(['/results'], { state: { resultInfo: result } }),
-      (err) => (this.serverError = err.error?.message || 'error.server')
-    );
+      error: (err) => (this.serverError = err.error?.message || 'error.server'),
+    });
   }
 }
