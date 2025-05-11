@@ -1,4 +1,77 @@
 <div class="container">
+  <div class="explanation-section">
+    <button class="expander" (click)="toggleExplanation()">
+      {{
+        showExplanation ? "Magyarázat elrejtése" : "Magyarázat megjelenítése"
+      }}
+    </button>
+
+    <div
+      *ngIf="showExplanation && resultInfo.type === 'si'"
+      class="explanation-content"
+    >
+      <p><strong>Hálózati cím binárisan:</strong></p>
+      <pre class="binary-line">
+      <ng-container *ngFor="let octet of networkBinary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'covered-bit': oi * 8 + bi < maskBitCount }">
+          {{ bit }}
+        </span>
+        <span *ngIf="oi < networkBinary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ resultInfo.entries[0].subnetAddress }}</span>
+    </pre>
+
+      <p>
+        <strong>Első állomás címe:</strong> az utolsó host-bit felkapcsolásával:
+      </p>
+      <pre class="binary-line">
+      <ng-container *ngFor="let octet of firstHostBinary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': oi * 8 + bi === 31 }">
+          {{ bit }}
+        </span>
+        <span *ngIf="oi < firstHostBinary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ entries[0].firstHostAddress }}</span>
+    </pre>
+
+      <p>
+        <strong>Utolsó állomás címe:</strong> a hoszt-tartomány összes bitje (az
+        utolsó kivételével):
+      </p>
+      <pre class="binary-line">
+      <ng-container *ngFor="let octet of lastHostBinary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': (oi * 8 + bi) >= maskBitCount && (oi * 8 + bi) < 31 }">
+          {{ bit }}
+        </span>
+        <span *ngIf="oi < lastHostBinary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ entries[0].lastHostAddress }}</span>
+    </pre>
+
+      <p>
+        <strong>Broadcast cím:</strong> a hoszt-tartomány összes bitjének
+        felkapcsolásával:
+      </p>
+      <pre class="binary-line">
+      <ng-container *ngFor="let octet of broadcastBinary; let oi = index">
+        <span *ngFor="let bit of octet; let bi = index"
+              [ngClass]="{ 'host-bit': (oi * 8 + bi) >= maskBitCount }">
+          {{ bit }}
+        </span>
+        <span *ngIf="oi < broadcastBinary.length - 1" class="octet-separator">.</span>
+      </ng-container>
+      <i class="material-icons arrow-icon">arrow_forward</i>
+      <span class="decimal">{{ entries[0].broadcastAddress }}</span>
+    </pre>
+    </div>
+  </div>
+
   <p *ngIf="resultInfo.type != 'si'" class="count-label">
     {{ "results.countLabel" | translate }}
     <strong>{{ entries.length }}</strong>
