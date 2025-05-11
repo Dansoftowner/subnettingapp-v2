@@ -62,12 +62,18 @@
                 "glob": "**/*",
                 "input": "src/assets/stylesheets",
                 "output": "/stylesheets"
+              },
+              {
+                "glob": "**/*",
+                "input": "node_modules/material-design-icons/iconfont",
+                "output": "/assets/material-icons"
               }
             ],
             "styles": [
               "src/styles.css",
               "src/assets/stylesheets/base.css",
-              "src/assets/stylesheets/fonts.css"
+              "src/assets/stylesheets/fonts.css",
+              "node_modules/material-design-icons/iconfont/material-icons.css"
             ],
             "scripts": []
           },
