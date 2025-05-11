@@ -26,7 +26,7 @@ describe('IPv4 Task API Endpoints', () => {
         firstHostAddress: '192.168.1.1',
         lastHostAddress: '192.168.1.254',
         broadcastAddress: '192.168.1.255',
-        subnetMask: '/24',
+        subnetMask: '255.255.255.0',
         subnetMaskBitCount: 24,
         hosts: 254,
         hostsUsed: 0,
