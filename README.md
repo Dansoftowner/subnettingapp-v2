@@ -84,8 +84,8 @@ npm run start
 
 **Előfeltételek**:
 
-- [Node.JS telepítése](https://nodejs.org/en/download)
-- [Angular CLI telepítése](https://nodejs.org/en/download) (`npm install -g @angular/cli`)
+1. [Node.JS telepítése](https://nodejs.org/en/download)
+2. [Angular CLI telepítése](https://nodejs.org/en/download) (`npm install -g @angular/cli`)
 
 #### Futtatás
 
@@ -104,4 +104,13 @@ Frontend szerver indítása:
 
 ```
 ng serve
+```
+
+## Automatizált tesztek
+
+A backend-en az API végpontokra automatizált tesztek vannak írva. Ezeket az `npm run test` paranccsal lehet lefuttatni.
+
+```bash
+cd subnettingapp-backend
+npm run test
 ```
