@@ -15,6 +15,8 @@ A _SubnettingApp_ egy IPv4-hálózatok felbontására és tervezésére szolgál
 - **Hálózat azonos méretű alhálózatokra történő felbontása**:
   Egy hálózat szabályos, egyenletes felosztása azonos méretű alhálózatokra.
 
+> Az alkalmazásnak van egy régebbi "elődje" is, ez szintén elérhető egy [nyilvános repository-ban](https://github.com/Dansoftowner/SubnettingApp).
+
 ## Forráskód
 
 A _backend_ és a _frontend_ alkalmazás is ebben az egy repository-ban van tárolva, két alkönyvtárban:
@@ -150,4 +152,3 @@ Alapvető fontosságú az, hogy a jelszavak, illetve egyéb érzékeny (_sensiti
 Ezért mind a jelszavak, mind a *password token*ek a [Bcrypt](https://www.npmjs.com/package/bcrypt) titkosítási algoritmussal *hash*elésre kerülnek.
 
 A _password tokenek_ pedig - amelyek az elfelejtett jelszavak helyreállítási folyamatban játszanak kulcsszerepet - egy [TTL index](https://www.mongodb.com/docs/manual/core/index-ttl/) segítségével 1 óra után automatikusan törlésre kerülnek a létrehozás után.
-
