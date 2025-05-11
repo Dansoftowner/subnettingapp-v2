@@ -62,14 +62,16 @@ form input[type="email"]:focus {
 
 form button[type="submit"],
 .header-actions button,
-.dashboard button {
+.dashboard button,
+.explanation-section button {
   background-color: lightgray;
   color: rgb(36, 35, 35);
 }
 
 form button[type="submit"]:hover,
 .header-actions button:hover,
-.dashboard button:hover {
+.dashboard button:hover,
+.explanation-section button:hover {
   background-color: var(--accent-color);
   color: #2c2e31;
 }
