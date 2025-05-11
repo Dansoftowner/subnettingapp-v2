@@ -86,4 +86,22 @@ router.patch(
   }),
 );
 
+router.delete(
+  '/history-items/:id',
+  auth,
+  asyncErrorHandler(async (req: Request, res: Response) => {
+    const userId = req.user!.id;
+    const { id } = req.params;
+
+    const item = await HistoryItem.findById(id);
+    if (!item || item.userId.toString() !== userId) {
+      return res.status(404).json({ message: 'Not found' });
+    }
+
+    await item.deleteOne();
+
+    res.status(204).end();
+  }),
+);
+
 export default router;

@@ -1,4 +1,4 @@
-import { TaskType } from "./TaskType.model";
+import { TaskType } from './task-type.model';
 
 export interface HistoryItem {
   _id?: string;

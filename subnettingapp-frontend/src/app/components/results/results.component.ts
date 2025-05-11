@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { IPv4Validators } from '../form/ipv4-validators';
-import { SubnetEntry } from '../../models/SubnetEntry.model';
-import { ResultInfo } from '../../models/ResultInfo.model';
+import { SubnetEntry } from '../../models/subnet-entry.model';
+import { ResultInfo } from '../../models/result-info.model';
 
 @Component({
   selector: 'app-results',

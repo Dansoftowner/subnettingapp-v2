@@ -22,9 +22,9 @@ import { SettingsService } from 'src/app/services/settings.service';
 import { Ipv4TaskService } from 'src/app/services/ipv4-task.service';
 import { HistoryService } from 'src/app/services/history.service';
 import { HistoryItem } from 'src/app/models/history-item.model';
-import { ResultInfo } from 'src/app/models/ResultInfo.model';
+import { ResultInfo } from 'src/app/models/result-info.model';
 import { TranslateService } from '@ngx-translate/core';
-import { TaskType } from 'src/app/models/TaskType.model';
+import { TaskType } from 'src/app/models/task-type.model';
 
 @Component({
   selector: 'app-form',
