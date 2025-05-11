@@ -85,4 +85,29 @@ export class DashboardComponent implements OnInit, AfterViewInit {
   openItem(item: HistoryItem): void {
     this.router.navigate(['/form'], { state: { historyItem: item } });
   }
+
+  deleteItem(item: HistoryItem): void {
+    this.errorMessage = null;
+    const title = item.title
+      ? item.title
+      : this.translate.instant('dashboard.no_title');
+
+    const message = this.translate.instant('dashboard.delete_confirm', {
+      title,
+    });
+
+    if (!window.confirm(message)) {
+      return;
+    }
+
+    this.historyService.deleteHistoryItem(item._id!).subscribe({
+      next: () => {
+        this.items = this.items.filter((i) => i._id !== item._id);
+      },
+      error: (err) => {
+        const fallback = this.translate.instant('dashboard.server_error');
+        this.errorMessage = err.error?.message || err.message || fallback;
+      },
+    });
+  }
 }

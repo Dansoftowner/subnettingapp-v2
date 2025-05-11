@@ -39,7 +39,6 @@
 }
 
 .history-card {
-  display: block;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   transition: transform 0.1s;
   padding: 5px 10px;
@@ -71,6 +70,37 @@ button {
 
 button:hover {
   cursor: pointer;
+}
+
+.history-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-info {
+  flex: 1;
+  cursor: pointer;
+  width: 80%;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  padding: 4px;
+  margin-left: 8px;
+  cursor: pointer;
+  max-width: fit-content;
+}
+
+.delete-btn .material-icons {
+  font-size: 24px;
+  vertical-align: middle;
+  color: gray;
+}
+
+.delete-btn:hover .material-icons {
+  color: inherit;
 }
 
 .history-list::-webkit-scrollbar {

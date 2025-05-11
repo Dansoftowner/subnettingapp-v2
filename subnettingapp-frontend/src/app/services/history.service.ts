@@ -35,4 +35,8 @@ export class HistoryService {
   ): Observable<HistoryItem> {
     return this.http.patch<HistoryItem>(`${this.baseUrl}/${id}`, changes);
   }
+
+  deleteHistoryItem(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.baseUrl}/${id}`);
+  }
 }

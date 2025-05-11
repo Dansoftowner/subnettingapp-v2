@@ -2,6 +2,8 @@
     "dashboard.new_calculation": "Új számolás",
     "dashboard.loading": "Betöltés...",
     "dashboard.no_title": "Nincs cím",
+    "dashboard.delete_tooltip": "Bejegyzés törlése",
+    "dashboard.delete_confirm": "Biztos ki akarja törölni ezt: “{{title}}”?",
     "form.header": "Számolás",
     "dashboard.server_error": "Szerver hiba történt",
     "form.title.prompt": "Cím, pl.: \"B terem hálózata\"",
