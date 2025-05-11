@@ -71,9 +71,12 @@ export class ResultsComponent implements OnInit {
             binary,
           };
         });
-      this.maskBitCount = this.ipToBinaryOctets(this.resultInfo.networkMask)
-        .flat()
-        .filter((bit) => bit === '1').length;
+      this.maskBitCount = IPv4Validators.maskToBitCount(
+        this.resultInfo.networkMask
+      )!;
+      this.networkBinary = this.ipToBinaryOctets(
+        this.resultInfo.networkAddress
+      );
     }
   }
 
