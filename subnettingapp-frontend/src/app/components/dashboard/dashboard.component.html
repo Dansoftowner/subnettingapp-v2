@@ -11,8 +11,11 @@
       class="history-card entry"
       (click)="openItem(item)"
     >
-      <h4>{{ item.title || "––" }}</h4>
-      <p>{{ item.networkAddress }} / {{ item.networkMask }}</p>
+      <h4 *ngIf="item.title">{{ item.title }}</h4>
+      <h4 class="title-placeholder" *ngIf="!item.title">
+        {{ "dashboard.no_title" | translate }}
+      </h4>
+      <p>{{ item.networkAddress }} /{{ item.networkMask }}</p>
       <small>{{ item.createdAt | date : "short" }}</small>
     </div>
     <div *ngIf="loading" class="loading">

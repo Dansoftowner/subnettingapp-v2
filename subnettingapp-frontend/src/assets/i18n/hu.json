@@ -1,6 +1,7 @@
 {
     "dashboard.new_calculation": "Új számolás",
     "dashboard.loading": "Betöltés...",
+    "dashboard.no_title": "Nincs cím",
     "form.header": "Számolás",
     "dashboard.server_error": "Szerver hiba történt",
     "form.title.prompt": "Cím, pl.: \"B terem hálózata\"",
