@@ -100,6 +100,19 @@ export class FormComponent implements OnInit {
           !this.autoMaskFormatDDN
         );
         this.form.get('mask')!.setValue(formatted, { emitEvent: false });
+
+        if (this.historyItemId) {
+          this.historyService
+            .patchHistoryItem(this.historyItemId, { networkMask: bits })
+            .pipe(
+              catchError((err) => {
+                this.serverError =
+                  err.error?.message || this.translate.instant('error.server');
+                return of(null);
+              })
+            )
+            .subscribe();
+        }
       }
     });
 
