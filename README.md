@@ -55,13 +55,13 @@ A _backend_ és a _frontend_ alkalmazás is ebben az egy repository-ban van tár
 cd subnettingapp-backend
 ```
 
-**Függőségek telepítése:**
+Függőségek telepítése:
 
 ```bash
 npm install
 ```
 
-**Development szerver inditása:**
+Development szerver inditása:
 
 ```
 npm run dev
@@ -69,7 +69,7 @@ npm run dev
 
 > A development szerver a kód módosításakor automatikusan újraindul.
 
-**"Hagyományos" futtatás**:
+**Normál futtatás**:
 
 Typescript kód fordítása:
 
