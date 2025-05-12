@@ -152,3 +152,11 @@ Alapvető fontosságú az, hogy a jelszavak, illetve egyéb érzékeny (_sensiti
 Ezért mind a jelszavak, mind a *password token*ek a [Bcrypt](https://www.npmjs.com/package/bcrypt) titkosítási algoritmussal *hash*elésre kerülnek.
 
 A _password tokenek_ pedig - amelyek az elfelejtett jelszavak helyreállítási folyamatban játszanak kulcsszerepet - egy [TTL index](https://www.mongodb.com/docs/manual/core/index-ttl/) segítségével 1 óra után automatikusan törlésre kerülnek a létrehozás után.
+
+## Autentikáció és autorizáció
+
+Felhasználók kezelése [JWT](https://jwt.io/) tokenekkel történik.  
+A hitelesítést az `/api/auth` végpont végzi, ami sikeres művelet esetén egy `x-auth-token` nevű HTTP header-ben
+adja vissza a JWT tokent, amit a frontend a `localStorage`-ban tárol el.
+
+Az autorizáció is a védett végpontoknál a JWT token `x-auth-token` HTTP fejlécben történő küldésével történik.
