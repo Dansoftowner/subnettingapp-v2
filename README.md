@@ -160,3 +160,25 @@ A hitelesítést az `/api/auth` végpont végzi, ami sikeres művelet esetén eg
 adja vissza a JWT tokent, amit a frontend a `localStorage`-ban tárol el.
 
 Az autorizáció is a védett végpontoknál a JWT token `x-auth-token` HTTP fejlécben történő küldésével történik.
+
+## Többnyelvűség (I18N)
+
+Az alkalmazás webes felülete _internacionalizálva_ van, a magyar nyelv mellett az angol nyelv is támogatott.
+A fordításokat a `subnettingapp-frontend/assets/i18n` könyvtárban találhatjuk JSON formátumban.
+Pl.: hu.json
+
+```json
+{
+  ...
+  "dashboard.new_calculation": "Új számolás",
+  "dashboard.loading": "Betöltés...",
+  "dashboard.no_title": "Nincs cím",
+  "dashboard.delete_tooltip": "Bejegyzés törlése",
+  "form.header": "Számolás"
+  ...
+}
+```
+
+Új nyelvek támogatása tehát nagyon egyszerűen implementálható egy új JSON fájl létrehozásával.
+
+> Az i18n Angular-ban történő hatékony implementálásához az `ngx-translate` csomagot használja a program.
