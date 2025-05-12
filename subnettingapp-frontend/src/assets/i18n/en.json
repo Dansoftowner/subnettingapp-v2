@@ -70,7 +70,7 @@
     "settings.language.auto": "Automatic",
     "settings.language.en": "English",
     "settings.language.hu": "Hungarian",
-    "settings.auto_mask": "Calculate masks automatically",
+    "settings.auto_mask": "Calculate classful masks automatically",
     "settings.auto_mask_format": "Format",
     "settings.auto_mask_format.cdir": "CDir format (/x)",
     "settings.auto_mask_format.ddn": "Dot decimal notation (x.x.x.x)",

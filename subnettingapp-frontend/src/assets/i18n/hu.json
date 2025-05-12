@@ -70,7 +70,7 @@
     "settings.language.auto": "Automatikus",
     "settings.language.en": "Angol",
     "settings.language.hu": "Magyar",
-    "settings.auto_mask": "Maszkok automatikus kiszámítása",
+    "settings.auto_mask": "Osztály szerinti maszkok automatikus beírása",
     "settings.auto_mask_format": "Formátum",
     "settings.auto_mask_format.cdir": "CDir formátum (/x)",
     "settings.auto_mask_format.ddn": "Pontokkal elválasztott (x.x.x.x)",
