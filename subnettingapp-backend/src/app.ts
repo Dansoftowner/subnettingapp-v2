@@ -9,6 +9,7 @@ import historyItemRoutes from './routes/history-items.routes';
 import config from 'config';
 import errorMiddleware from './middlewares/error.middleware';
 import { logger } from './logger';
+import { authRateLimiter, generalRateLimiter } from './rate-limiters';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -23,9 +24,9 @@ app.use(cors(corsConfig));
 if (process.env.NODE_ENV != 'test') app.use(morgan('combined'));
 
 app.use(express.json());
-app.use('/api', authRoutes);
-app.use('/api', ipv4TasksRoutes);
-app.use('/api', historyItemRoutes);
+app.use('/api', generalRateLimiter, ipv4TasksRoutes);
+app.use('/api', generalRateLimiter, historyItemRoutes);
+app.use('/api', authRateLimiter, authRoutes);
 
 app.use(errorMiddleware);
 

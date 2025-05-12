@@ -1,7 +1,13 @@
 import request from 'supertest';
 import { app } from '../src/app';
+import { generalRateLimiterStore } from '../src/rate-limiters';
+import { beforeEach } from 'node:test';
 
 describe('IPv4 Task API Endpoints', () => {
+  beforeEach(async () => {
+    await generalRateLimiterStore.resetAll();
+  });
+
   /**
    * Test /api/ipv4-task/si (Network Info)
    */

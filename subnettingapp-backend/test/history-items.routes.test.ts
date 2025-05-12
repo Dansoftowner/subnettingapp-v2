@@ -7,6 +7,8 @@ import jwt from 'jsonwebtoken';
 import { app } from '../src/app';
 import { HistoryItem } from '../src/models/history-item.model';
 
+import { generalRateLimiterStore } from '../src/rate-limiters';
+
 // Mock jwt.verify to bypass actual token validation
 jest.mock('jsonwebtoken', () => ({
   verify: jest.fn((token: string, secret: string) => ({ id: token })),
@@ -28,6 +30,7 @@ describe('HistoryItems API', () => {
 
   beforeEach(async () => {
     await HistoryItem.deleteMany({});
+    await generalRateLimiterStore.resetAll()
   });
 
   const authHeader = () => config.get<string>('jwt.headerName');

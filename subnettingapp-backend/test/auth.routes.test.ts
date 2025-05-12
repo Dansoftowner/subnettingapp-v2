@@ -6,6 +6,7 @@ import crypto from 'crypto';
 import { User } from '../src/models/user.model';
 import { PasswordToken } from '../src/models/password-token.model';
 import { MongoMemoryServer } from 'mongodb-memory-server';
+import { authRateLimiterStore } from '../src/rate-limiters';
 
 jest.setTimeout(20000);
 
@@ -30,7 +31,10 @@ afterAll(async () => {
 });
 
 afterAll(async () => await mongoose.connection.close());
-beforeEach(async () => await User.deleteMany({}));
+beforeEach(async () => {
+  await User.deleteMany({});
+  await authRateLimiterStore.resetAll();
+});
 
 describe('POST /api/registration', () => {
   it('should register a new user', async () => {
