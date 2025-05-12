@@ -123,7 +123,7 @@
             <span *ngIf="oi < subnet.binary.length - 1" class="octet-separator">.</span>
           </ng-container>
           <i class="material-icons arrow-icon">arrow_forward</i>
-          <span class="decimal">{{ subnet.networkAddress }}/{{ subnet.subnetMaskBitCount }}</span>
+          <span class="decimal">{{ resultInfo.entries[idx].subnetAddress }}/{{ subnet.subnetMaskBitCount }}</span>
         </pre>
 
         <pre class="binary-line">
