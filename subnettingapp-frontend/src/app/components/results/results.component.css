@@ -123,6 +123,12 @@
   padding: 5px;
 }
 
+@media screen and (max-width: 995px) {
+  .explanation-content {
+    overflow-x: scroll;
+  }
+}
+
 .binary-line {
   font-family: "Jetbrains Mono";
   white-space: nowrap;
